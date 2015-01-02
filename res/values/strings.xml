@@ -3,5 +3,8 @@
 
     <string name="app_name">Russian Triple for Android</string>
     <string name="title_activity_game">Russian Triple</string>
+    <string name="new_game_menu">New Game</string>
+    <string name="new_deal_menu">New Deal</string>
+    <string name="exit_menu">Exit</string>
 
 </resources>

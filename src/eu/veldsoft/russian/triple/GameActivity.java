@@ -6,10 +6,32 @@ import java.util.Map;
 import android.app.Activity;
 import android.os.Bundle;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
+import android.view.View.OnClickListener;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 public class GameActivity extends Activity {
+
+	private View.OnClickListener cardClicked = new View.OnClickListener() {
+		@Override
+		public void onClick(View view) {
+			// TODO Do it in better way.
+			for (int i = 0; i < cardsImages.length; i++) {
+				if (view == cardsImages[i]) {
+					board.click(i);
+					break;
+				}
+			}
+
+			redraw();
+		}
+	};
+
+	private Integer backDrawable = null;
+
 	private Map<Card, Integer> cardToDrawable = new HashMap<Card, Integer>();
 
 	private ImageView cardsImages[] = { null, null, null, null, null, null,
@@ -22,13 +44,25 @@ public class GameActivity extends Activity {
 	private void redraw() {
 		Card all[] = board.getCardsOnTheBoard();
 
+		for (ImageView image : cardsImages) {
+			image.setAlpha(1.0F);
+		}
+
 		for (int i = 0; i < all.length && i < cardsImages.length; i++) {
-			if (all[i] == null) {
+			if (all[i] == null || all[i].isInvisible() == true) {
 				cardsImages[i].setImageBitmap(null);
 				continue;
 			}
 
-			cardsImages[i].setImageResource(cardToDrawable.get(all[i]));
+			if (all[i].isFaceDown() == true) {
+				cardsImages[i].setImageResource(backDrawable);
+			} else if (all[i].isFaceUp() == true) {
+				cardsImages[i].setImageResource(cardToDrawable.get(all[i]));
+			}
+
+			if (all[i].isHighlighted() == true) {
+				cardsImages[i].setAlpha(0.5F);
+			}
 		}
 	}
 
@@ -36,6 +70,8 @@ public class GameActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_game);
+
+		backDrawable = R.drawable.back01;
 
 		cardToDrawable.put(Deck.cardAtPosition(0), R.drawable.card009c);
 		cardToDrawable.put(Deck.cardAtPosition(1), R.drawable.card010c);
@@ -92,8 +128,40 @@ public class GameActivity extends Activity {
 		cardsImages[27] = (ImageView) findViewById(R.id.imageView028);
 		cardsImages[28] = (ImageView) findViewById(R.id.imageView029);
 		cardsImages[29] = (ImageView) findViewById(R.id.imageView030);
+
+		cardsImages[24].bringToFront();
+		cardsImages[25].bringToFront();
+		cardsImages[26].bringToFront();
+
+		for (ImageView view : cardsImages) {
+			view.setOnClickListener(cardClicked);
+		}
 		
-		board.deal();
+		board.reset();
 		redraw();
+	}
+
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		MenuInflater inflater = getMenuInflater();
+		inflater.inflate(R.menu.game_option_menu, menu);
+		return super.onCreateOptionsMenu(menu);
+	}
+
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		switch (item.getItemId()) {
+		case R.id.new_game:
+			break;
+		case R.id.new_deal:
+			board.deal();
+			redraw();
+			break;
+		case R.id.exit_game:
+			finish();
+			System.exit(0);
+			break;
+		}
+		return true;
 	}
 }

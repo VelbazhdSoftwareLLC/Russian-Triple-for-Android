@@ -4,7 +4,8 @@ import java.util.Collections;
 import java.util.Vector;
 
 class Player {
-
+	private static NoTrumpComparator cardsOrder = new NoTrumpComparator();
+	
 	private String name;
 
 	private int score;
@@ -63,7 +64,6 @@ class Player {
 	}
 
 	public void sort(Vector<Card> hand) {
-		// TODO Create card comparators.
-		//Collections.sort((Vector) hand, Collections.reverseOrder());
+		//Collections.sort((Vector) hand, cardsOrder);
 	}
 }
