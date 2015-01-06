@@ -6,15 +6,17 @@ import java.util.Vector;
 
 public class Board {
 	public static final int HUMAN_PLAYER_INDEX = 1;
-	
+
 	private State state = State.STARTING;
-	
+
+	private int firstInRoundIndex = HUMAN_PLAYER_INDEX;
+
+	private int currentBidderIndex = HUMAN_PLAYER_INDEX;
+
 	private Bid currentBid = null;
-	
-	private Player currentBidder = null;
 
 	private Vector<Bid> bidHistory = new Vector<Bid>();
-	
+
 	private Card.Suit trump = null;
 
 	// TODO Create Talon class.
@@ -23,7 +25,13 @@ public class Board {
 	// TODO Create Trick class.
 	private Map<Player, Card> trick = new HashMap<Player, Card>();
 
-	private Player players[] = { new Player(), new Player(), new Player() };
+	private Player players[] = { new ComputerPlayer("Player 1"),
+			new HumanPlayer("Player 2"), new ComputerPlayer("Player 3") };
+
+	private boolean isValidBid(Bid bid) {
+		// TODO
+		return false;
+	}
 
 	public State getState() {
 		return state;
@@ -77,6 +85,20 @@ public class Board {
 		this.players = players;
 	}
 
+	public Player getCurrnetBidder() {
+		return (players[currentBidderIndex]);
+	}
+
+	public String[] getPlayersInfo() {
+		String info[] = new String[players.length];
+
+		for (int p = 0; p < players.length; p++) {
+			info[p] = players[p].getName() + " ~ " + players[p].getScore();
+		}
+
+		return info;
+	}
+
 	public Card[] getCardsOnTheBoard() {
 		Card cards[] = { null, null, null, null, null, null, null, null, null,
 				null, null, null, null, null, null, null, null, null, null,
@@ -106,19 +128,32 @@ public class Board {
 		return cards;
 	}
 
-	public void reset() {
+	public void resetGame() {
 		state = State.STARTING;
-		currentBid = null;
-		currentBidder = null;
+		firstInRoundIndex = Util.PRNG.nextInt(players.length);
+		resetRound();
+	}
+
+	public void resetRound() {
 		bidHistory.clear();
 		trump = null;
 		talon.clear();
 		trick.clear();
+		for (Player player : players) {
+			player.resetRound();
+		}
+		for (int p = 0; p < players.length; p++) {
+			if (firstInRoundIndex == p) {
+				firstInRoundIndex = (p + 1) % players.length;
+				break;
+			}
+		}
+		currentBidderIndex = firstInRoundIndex;
 	}
-	
+
 	public void deal() {
 		state = State.DEALING;
-		
+
 		Deck.reset();
 		Deck.shuffle();
 
@@ -142,8 +177,10 @@ public class Board {
 				players[p].recieve(card);
 				index++;
 			}
-			players[p].sort(players[p].getHand());
+			players[p].sort();
 		}
+
+		state = State.BIDDING;
 	}
 
 	public void click(int selected) {
@@ -153,23 +190,23 @@ public class Board {
 		int index = 0;
 		for (int p = 0; p < players.length; p++, index = p * 8) {
 			for (Card card : players[p].getHand()) {
-				if(index == selected) {
+				if (index == selected) {
 					if (p == HUMAN_PLAYER_INDEX) {
 						/*
 						 * Talon spliting action.
 						 */
-						if(card.isUnhighlighted() == true) {
+						if (card.isUnhighlighted() == true) {
 							Deck.setAllUnhighlighted();
 							card.highlight();
-						} else if(card.isHighlighted() == true) {
+						} else if (card.isHighlighted() == true) {
 							card.unhighlight();
 						}
 					}
 
-					//TODO Take actions.
+					// TODO Take actions.
 					return;
 				}
-				
+
 				index++;
 			}
 		}
@@ -179,18 +216,18 @@ public class Board {
 		 */
 		index = 24;
 		for (Card card : talon) {
-			if(index == selected) {
-				if(card.isUnhighlighted() == true) {
+			if (index == selected) {
+				if (card.isUnhighlighted() == true) {
 					Deck.setAllUnhighlighted();
 					card.highlight();
-				} else if(card.isHighlighted() == true) {
+				} else if (card.isHighlighted() == true) {
 					card.unhighlight();
 				}
-				
-				//TODO Take actions.
+
+				// TODO Take actions.
 				return;
 			}
-			
+
 			index++;
 		}
 
@@ -199,12 +236,43 @@ public class Board {
 		 */
 		index = 27;
 		for (Player player : players) {
-			if(index == selected) {
-				//TODO Take actions.
+			if (index == selected) {
+				// TODO Take actions.
 				return;
 			}
-			
+
 			index++;
 		}
+	}
+
+	public boolean doBid() {
+		if (players[currentBidderIndex] instanceof AIBidder == false) {
+			return false;
+		}
+
+		AIBidder bidder = (AIBidder) players[currentBidderIndex];
+
+		int score = bidHistory.lastElement().getScore();
+
+		if (bidder.canDoBid(score) == true) {
+			Bid bid = bidder.doBid(score);
+
+			if (isValidBid(bid) == true) {
+				currentBid = bid;
+				bidHistory.add(currentBid);
+				return true;
+			} else {
+				/*
+				 * Pass.
+				 */
+			}
+		} else {
+			/*
+			 * Pass.
+			 */
+		}
+
+		return false;
+
 	}
 }

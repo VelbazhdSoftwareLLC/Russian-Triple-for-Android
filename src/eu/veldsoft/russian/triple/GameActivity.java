@@ -5,15 +5,34 @@ import java.util.Map;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 public class GameActivity extends Activity {
+
+	private Runnable biddingThread = new Runnable() {
+		@Override
+		public void run() {
+			if(board.getCurrnetBidder() instanceof HumanPlayer){
+				//TODO Run activitiy.
+			} else if(board.getCurrnetBidder() instanceof ComputerPlayer) {
+				board.doBid();
+			}
+			
+			//TODO At the end of the bidding.
+			//handler.removeCallbacks(this);
+			//return;
+			
+			handler.postDelayed(this, 100);
+		}
+	};
 
 	private View.OnClickListener cardClicked = new View.OnClickListener() {
 		@Override
@@ -30,9 +49,15 @@ public class GameActivity extends Activity {
 		}
 	};
 
+	private Handler handler = new Handler();
+
+	private TextView playersInfo[] = { null, null, null };
+
 	private Integer backDrawable = null;
 
 	private Map<Card, Integer> cardToDrawable = new HashMap<Card, Integer>();
+
+	private ImageView trumpImage = null;
 
 	private ImageView cardsImages[] = { null, null, null, null, null, null,
 			null, null, null, null, null, null, null, null, null, null, null,
@@ -42,25 +67,48 @@ public class GameActivity extends Activity {
 	private Board board = new Board();
 
 	private void redraw() {
-		Card all[] = board.getCardsOnTheBoard();
+		String players[] = board.getPlayersInfo();
+
+		for (int i = 0; i < playersInfo.length && i < players.length; i++) {
+			if (board.getState() == State.STARTING) {
+				playersInfo[i].setText("");
+				continue;
+			}
+
+			playersInfo[i].setText(players[i]);
+		}
+
+		if (board.getTrump() == null) {
+			trumpImage.setImageBitmap(null);
+		} else if (board.getTrump() == Card.Suit.SPADES) {
+			trumpImage.setImageResource(R.drawable.spades);
+		} else if (board.getTrump() == Card.Suit.HEARTS) {
+			trumpImage.setImageResource(R.drawable.hearts);
+		} else if (board.getTrump() == Card.Suit.CLUBS) {
+			trumpImage.setImageResource(R.drawable.clubs);
+		} else if (board.getTrump() == Card.Suit.DIAMONDS) {
+			trumpImage.setImageResource(R.drawable.diamonds);
+		}
+
+		Card cards[] = board.getCardsOnTheBoard();
 
 		for (ImageView image : cardsImages) {
 			image.setAlpha(1.0F);
 		}
 
-		for (int i = 0; i < all.length && i < cardsImages.length; i++) {
-			if (all[i] == null || all[i].isInvisible() == true) {
+		for (int i = 0; i < cards.length && i < cardsImages.length; i++) {
+			if (cards[i] == null || cards[i].isInvisible() == true) {
 				cardsImages[i].setImageBitmap(null);
 				continue;
 			}
 
-			if (all[i].isFaceDown() == true) {
+			if (cards[i].isFaceDown() == true) {
 				cardsImages[i].setImageResource(backDrawable);
-			} else if (all[i].isFaceUp() == true) {
-				cardsImages[i].setImageResource(cardToDrawable.get(all[i]));
+			} else if (cards[i].isFaceUp() == true) {
+				cardsImages[i].setImageResource(cardToDrawable.get(cards[i]));
 			}
 
-			if (all[i].isHighlighted() == true) {
+			if (cards[i].isHighlighted() == true) {
 				cardsImages[i].setAlpha(0.5F);
 			}
 		}
@@ -70,6 +118,10 @@ public class GameActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_game);
+
+		playersInfo[0] = (TextView) findViewById(R.id.playerInfo01);
+		playersInfo[1] = (TextView) findViewById(R.id.playerInfo02);
+		playersInfo[2] = (TextView) findViewById(R.id.playerInfo03);
 
 		backDrawable = R.drawable.back01;
 
@@ -97,6 +149,8 @@ public class GameActivity extends Activity {
 		cardToDrawable.put(Deck.cardAtPosition(21), R.drawable.card012s);
 		cardToDrawable.put(Deck.cardAtPosition(22), R.drawable.card013s);
 		cardToDrawable.put(Deck.cardAtPosition(23), R.drawable.card001s);
+
+		trumpImage = (ImageView) findViewById(R.id.trumpImageView);
 
 		cardsImages[0] = (ImageView) findViewById(R.id.imageView001);
 		cardsImages[1] = (ImageView) findViewById(R.id.imageView002);
@@ -136,8 +190,8 @@ public class GameActivity extends Activity {
 		for (ImageView view : cardsImages) {
 			view.setOnClickListener(cardClicked);
 		}
-		
-		board.reset();
+
+		board.resetGame();
 		redraw();
 	}
 
@@ -152,10 +206,14 @@ public class GameActivity extends Activity {
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
 		case R.id.new_game:
+			board.resetGame();
+			redraw();
 			break;
 		case R.id.new_deal:
+			board.resetRound();
 			board.deal();
 			redraw();
+			handler.postDelayed(biddingThread, 0);
 			break;
 		case R.id.exit_game:
 			finish();

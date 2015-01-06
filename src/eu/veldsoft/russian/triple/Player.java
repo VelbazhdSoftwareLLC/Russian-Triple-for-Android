@@ -6,15 +6,21 @@ import java.util.Vector;
 class Player {
 	private static NoTrumpComparator cardsOrder = new NoTrumpComparator();
 	
-	private String name;
+	private String name = "";
 
-	private int score;
+	private int score = 0;
 
 	// TODO Create Hand class.
 	private Vector<Card> hand = new Vector<Card>();
 
 	// TODO Create CollectedTricks class.
 	private Vector<Card> tricks = new Vector<Card>();
+
+	private boolean canBid = false;
+	
+	public Player(String name) {
+		this.name = name;
+	}
 
 	public String getName() {
 		return name;
@@ -48,7 +54,16 @@ class Player {
 		this.tricks = tricks;
 	}
 
+	public void endBidding() {
+		canBid = false;
+	}
+	
+	public boolean isBidding() {
+		return canBid;
+	}
+	
 	public void resetRound() {
+		canBid = true;
 		hand.clear();
 		tricks.clear();
 	}
@@ -63,7 +78,7 @@ class Player {
 		}
 	}
 
-	public void sort(Vector<Card> hand) {
-		//Collections.sort((Vector) hand, cardsOrder);
+	public void sort() {
+		Collections.sort(hand, cardsOrder);
 	}
 }

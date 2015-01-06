@@ -3,28 +3,34 @@ package eu.veldsoft.russian.triple;
 class Card {
 
 	enum Rank {
-		TWO(2, "Two"), THREE(3, "Three"), FOUR(4, "Four"), FIVE(5, "Five"), SIX(
-				6, "Six"), SEVEN(7, "Seven"), EIGHT(8, "Eight"), NINE(9, "Nine"), TEN(
-				10, "Ten"), JACK(11, "Jack"), QUEEN(12, "Queen"), KING(13,
-				"King"), ACE(14, "Ace");
+		NINE(0, "Nine"), JACK(2, "Jack"), QUEEN(3, "Queen"), KING(4, "King"), TEN(
+				10, "Ten"), ACE(11, "Ace");
 
-		private int number;
+		private int points;
 
 		private String name;
 
 		private Rank(int number, String name) {
-			this.number = number;
+			this.points = number;
 			this.name = name;
+		}
+
+		public int getPoints() {
+			return points;
+		}
+
+		public String getName() {
+			return name;
 		}
 
 		public boolean isAdjacentTo(Rank rank) {
 			// TODO Do not use internal numbering.
 
-			if ((this.number + 1) == rank.number) {
+			if ((this.points + 1) == rank.points) {
 				return (true);
 			}
 
-			if ((rank.number + 1) == this.number) {
+			if ((rank.points + 1) == this.points) {
 				return (true);
 			}
 
@@ -33,16 +39,24 @@ class Card {
 	}
 
 	enum Suit {
-		SPADES(1, "Spades"), CLUBS(2, "Clubs"), DIAMONDS(3, "Diamonds"), HEARTS(
-				4, "Hearts");
+		DIAMONDS(1, "Diamonds"), CLUBS(2, "Clubs"), HEARTS(3, "Hearts"), SPADES(
+				4, "Spades");
 
-		private int number;
+		private int order;
 
 		private String name;
 
 		private Suit(int number, String name) {
-			this.number = number;
+			this.order = number;
 			this.name = name;
+		}
+
+		public int getOrder() {
+			return order;
+		}
+
+		public String getName() {
+			return name;
 		}
 	}
 
