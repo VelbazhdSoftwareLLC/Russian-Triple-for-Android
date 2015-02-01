@@ -1,6 +1,6 @@
 package eu.veldsoft.russian.triple;
 
-public class Deck {
+class Deck {
 	static private final Card[] cards = {
 			new Card(Card.Rank.NINE, Card.Suit.CLUBS, false, false, false),
 			new Card(Card.Rank.TEN, Card.Suit.CLUBS, false, false, false),

@@ -2,7 +2,7 @@ package eu.veldsoft.russian.triple;
 
 import java.util.Comparator;
 
-public class NoTrumpComparator implements Comparator<Card> {
+class NoTrumpComparator implements Comparator<Card> {
 
 	@Override
 	public int compare(Card lhs, Card rhs) {

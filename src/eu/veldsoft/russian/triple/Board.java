@@ -4,7 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Vector;
 
-public class Board {
+class Board {
 	public static final int HUMAN_PLAYER_INDEX = 1;
 
 	private State state = State.STARTING;
@@ -107,7 +107,7 @@ public class Board {
 
 		int index = 0;
 		for (int p = 0; p < players.length; p++, index = p * 8) {
-			for (Card card : players[p].getHand()) {
+			for (Card card : players[p].getHand().getCards()) {
 				cards[index] = card;
 				index++;
 			}
@@ -177,7 +177,7 @@ public class Board {
 				players[p].recieve(card);
 				index++;
 			}
-			players[p].sort();
+			players[p].prepare();
 		}
 
 		state = State.BIDDING;
@@ -189,7 +189,7 @@ public class Board {
 		 */
 		int index = 0;
 		for (int p = 0; p < players.length; p++, index = p * 8) {
-			for (Card card : players[p].getHand()) {
+			for (Card card : players[p].getHand().getCards()) {
 				if (index == selected) {
 					if (p == HUMAN_PLAYER_INDEX) {
 						/*

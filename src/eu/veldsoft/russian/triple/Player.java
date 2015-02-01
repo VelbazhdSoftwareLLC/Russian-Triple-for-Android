@@ -1,23 +1,19 @@
 package eu.veldsoft.russian.triple;
 
-import java.util.Collections;
 import java.util.Vector;
 
 class Player {
-	private static NoTrumpComparator cardsOrder = new NoTrumpComparator();
-	
 	private String name = "";
 
 	private int score = 0;
 
-	// TODO Create Hand class.
-	private Vector<Card> hand = new Vector<Card>();
+	private Hand hand = new Hand();
 
 	// TODO Create CollectedTricks class.
 	private Vector<Card> tricks = new Vector<Card>();
 
 	private boolean canBid = false;
-	
+
 	public Player(String name) {
 		this.name = name;
 	}
@@ -38,11 +34,11 @@ class Player {
 		this.score = score;
 	}
 
-	public Vector<Card> getHand() {
+	public Hand getHand() {
 		return hand;
 	}
 
-	public void setHand(Vector<Card> hand) {
+	public void setHand(Hand hand) {
 		this.hand = hand;
 	}
 
@@ -57,19 +53,20 @@ class Player {
 	public void endBidding() {
 		canBid = false;
 	}
-	
+
 	public boolean isBidding() {
 		return canBid;
 	}
-	
+
+	//TODO Create Round class.
 	public void resetRound() {
 		canBid = true;
-		hand.clear();
+		hand.rest();
 		tricks.clear();
 	}
 
 	public void recieve(Card card) {
-		hand.add(card);
+		hand.recieve(card);
 	}
 
 	public void recieve(Card[] trick) {
@@ -78,7 +75,7 @@ class Player {
 		}
 	}
 
-	public void sort() {
-		Collections.sort(hand, cardsOrder);
+	public void prepare() {
+		hand.sort();
 	}
 }
