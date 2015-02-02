@@ -1,10 +1,14 @@
 package eu.veldsoft.russian.triple;
 
+import java.util.Vector;
+
+import eu.veldsoft.russian.triple.Card.Rank;
+
 class Bid {
 	private int score;
-	
+
 	private Player player;
-	
+
 	public Bid(int score, Player player) {
 		super();
 		this.score = score;
@@ -18,7 +22,47 @@ class Bid {
 	public Player getPlayer() {
 		return player;
 	}
-	
+
+	public boolean valid() {
+		int numberOfMarriages = 0;
+
+		Vector<Card> cards = player.getHand().getCards();
+
+		for (Card a : cards) {
+			if (a.getRank() != Rank.QUEEN) {
+				continue;
+			}
+
+			for (Card b : cards) {
+				if (b.getRank() != Rank.KING) {
+					continue;
+				}
+
+				if (a.getSuit() == b.getSuit()) {
+					numberOfMarriages++;
+				}
+			}
+		}
+
+		if (score > 200) {
+			return false;
+		}
+
+		if (score > 180 && numberOfMarriages < 3) {
+			return false;
+		}
+
+		if (score > 160 && numberOfMarriages < 2) {
+			return false;
+		}
+
+		if (score > 120 && numberOfMarriages < 1) {
+			return false;
+		}
+
+		return true;
+	}
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;

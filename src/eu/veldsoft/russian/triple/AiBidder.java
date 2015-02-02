@@ -1,6 +1,6 @@
 package eu.veldsoft.russian.triple;
 
-interface AIBidder {
+interface AiBidder {
 
 	public boolean canDoBid(int currentValue);
 

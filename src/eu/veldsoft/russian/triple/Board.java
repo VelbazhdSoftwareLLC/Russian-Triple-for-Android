@@ -15,23 +15,17 @@ class Board {
 
 	private Bid currentBid = null;
 
+	// TODO Create BidHistory class.
 	private Vector<Bid> bidHistory = new Vector<Bid>();
 
 	private Card.Suit trump = null;
 
-	// TODO Create Talon class.
-	private Vector<Card> talon = new Vector<Card>();
+	private Talon talon = new Talon();
 
-	// TODO Create Trick class.
 	private Map<Player, Card> trick = new HashMap<Player, Card>();
 
 	private Player players[] = { new ComputerPlayer("Player 1"),
 			new HumanPlayer("Player 2"), new ComputerPlayer("Player 3") };
-
-	private boolean isValidBid(Bid bid) {
-		// TODO
-		return false;
-	}
 
 	public State getState() {
 		return state;
@@ -49,11 +43,11 @@ class Board {
 		this.trump = trump;
 	}
 
-	public Vector<Card> getTalon() {
+	public Talon getTalon() {
 		return talon;
 	}
 
-	public void setTalon(Vector<Card> talon) {
+	public void setTalon(Talon talon) {
 		this.talon = talon;
 	}
 
@@ -114,7 +108,7 @@ class Board {
 		}
 
 		index = 24;
-		for (Card card : talon) {
+		for (Card card : talon.getCards()) {
 			cards[index] = card;
 			index++;
 		}
@@ -137,7 +131,7 @@ class Board {
 	public void resetRound() {
 		bidHistory.clear();
 		trump = null;
-		talon.clear();
+		talon.reset();
 		trick.clear();
 		for (Player player : players) {
 			player.resetRound();
@@ -164,9 +158,10 @@ class Board {
 		 */
 		for (int i = 0; i < 3; i++) {
 			Deck.cardAtPosition(index).faceDown();
-			talon.add(Deck.cardAtPosition(index));
+			talon.recieve(Deck.cardAtPosition(index));
 			index++;
 		}
+		talon.sort();
 
 		for (int p = 0; p < players.length; p++) {
 			for (int i = 0; i < 7; i++) {
@@ -215,7 +210,7 @@ class Board {
 		 * Talon.
 		 */
 		index = 24;
-		for (Card card : talon) {
+		for (Card card : talon.getCards()) {
 			if (index == selected) {
 				if (card.isUnhighlighted() == true) {
 					Deck.setAllUnhighlighted();
@@ -246,18 +241,21 @@ class Board {
 	}
 
 	public boolean doBid() {
-		if (players[currentBidderIndex] instanceof AIBidder == false) {
+		if (players[currentBidderIndex] instanceof AiBidder == false) {
 			return false;
 		}
 
-		AIBidder bidder = (AIBidder) players[currentBidderIndex];
+		AiBidder bidder = (AiBidder) players[currentBidderIndex];
 
-		int score = bidHistory.lastElement().getScore();
+		int score = 0;
+		if(bidHistory.isEmpty() == false) {
+			score = bidHistory.lastElement().getScore();
+		}
 
 		if (bidder.canDoBid(score) == true) {
 			Bid bid = bidder.doBid(score);
 
-			if (isValidBid(bid) == true) {
+			if (bid.valid() == true) {
 				currentBid = bid;
 				bidHistory.add(currentBid);
 				return true;

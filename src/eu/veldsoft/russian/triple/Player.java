@@ -9,8 +9,7 @@ class Player {
 
 	private Hand hand = new Hand();
 
-	// TODO Create CollectedTricks class.
-	private Vector<Card> tricks = new Vector<Card>();
+	private Vector<Trick> tricks = new Vector<Trick>();
 
 	private boolean canBid = false;
 
@@ -42,11 +41,11 @@ class Player {
 		this.hand = hand;
 	}
 
-	public Vector<Card> getTricks() {
+	public Vector<Trick> getTricks() {
 		return tricks;
 	}
 
-	public void setTricks(Vector<Card> tricks) {
+	public void setTricks(Vector<Trick> tricks) {
 		this.tricks = tricks;
 	}
 
@@ -58,10 +57,10 @@ class Player {
 		return canBid;
 	}
 
-	//TODO Create Round class.
+	// TODO Create Round class.
 	public void resetRound() {
 		canBid = true;
-		hand.rest();
+		hand.reset();
 		tricks.clear();
 	}
 
@@ -69,10 +68,8 @@ class Player {
 		hand.recieve(card);
 	}
 
-	public void recieve(Card[] trick) {
-		for (Card card : trick) {
-			tricks.add(card);
-		}
+	public void recieve(Trick trick) {
+		tricks.add(trick);
 	}
 
 	public void prepare() {

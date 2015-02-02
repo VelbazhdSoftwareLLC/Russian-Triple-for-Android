@@ -3,7 +3,7 @@ package eu.veldsoft.russian.triple;
 import java.util.Collections;
 import java.util.Vector;
 
-class Hand {
+class Talon {
 	private Vector<Card> cards = new Vector<Card>();
 
 	public Vector<Card> getCards() {
@@ -14,16 +14,15 @@ class Hand {
 		this.cards = cards;
 	}
 
-	public void reset() {
-		cards.clear();
-	}
-
 	public void recieve(Card card) {
 		cards.add(card);
+	}
+
+	public void reset() {
+		cards.clear();
 	}
 
 	public void sort() {
 		Collections.sort(cards, Util.noTrumpComparator);
 	}
-
 }

@@ -1,10 +1,17 @@
 package eu.veldsoft.russian.triple;
 
 import java.util.Collections;
+import java.util.Map;
 import java.util.Vector;
 
-class Hand {
+class Trick {
 	private Vector<Card> cards = new Vector<Card>();
+
+	public Trick(Map<Player, Card> trick) {
+		for (Player player : trick.keySet()) {
+			cards.add(trick.get(player));
+		}
+	}
 
 	public Vector<Card> getCards() {
 		return cards;
@@ -16,10 +23,6 @@ class Hand {
 
 	public void reset() {
 		cards.clear();
-	}
-
-	public void recieve(Card card) {
-		cards.add(card);
 	}
 
 	public void sort() {
