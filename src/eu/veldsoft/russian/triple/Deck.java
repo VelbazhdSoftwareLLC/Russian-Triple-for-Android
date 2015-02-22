@@ -28,13 +28,13 @@ class Deck {
 			new Card(Card.Rank.ACE, Card.Suit.SPADES, false, false, false), };
 
 	public static final int SIZE = cards.length;
-	
+
 	static void reset() {
 		setAllUnhighlighted();
 		setAllFaceDown();
 		setAllVisible();
 	}
-	
+
 	static void shuffle() {
 		for (int last = cards.length - 1, r = -1; last > 0; last--) {
 			r = Util.PRNG.nextInt(last + 1);

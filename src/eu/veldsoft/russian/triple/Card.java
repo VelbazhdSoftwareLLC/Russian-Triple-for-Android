@@ -42,9 +42,28 @@ class Card {
 		DIAMONDS(1, "Diamonds"), CLUBS(2, "Clubs"), HEARTS(3, "Hearts"), SPADES(
 				4, "Spades");
 
-		private int order;
+		private int order = 0;
 
-		private String name;
+		private String name = null;
+
+		private boolean trump = false;
+
+		static public void removeTrump() {
+			// TODO May be it is not working!
+			for (Suit suit : Suit.values()) {
+				suit.trump = false;
+			}
+		}
+
+		static public boolean isTrumpSelected() {
+			for (Suit suit : Suit.values()) {
+				if (suit.isTrump() == true) {
+					return true;
+				}
+			}
+
+			return false;
+		}
 
 		private Suit(int number, String name) {
 			this.order = number;
@@ -57,6 +76,15 @@ class Card {
 
 		public String getName() {
 			return name;
+		}
+
+		public void setTrump() {
+			removeTrump();
+			trump = true;
+		}
+
+		public boolean isTrump() {
+			return (trump);
 		}
 	}
 

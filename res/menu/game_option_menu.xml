@@ -10,6 +10,14 @@
         android:title="@string/new_deal_menu"/>
 
     <item
+        android:id="@+id/help"
+        android:title="@string/help_menu"/>
+
+    <item
+        android:id="@+id/about"
+        android:title="@string/about_menu"/>
+    
+    <item
         android:id="@+id/exit_game"
         android:title="@string/exit_menu"/>
     

@@ -18,8 +18,6 @@ class Board {
 	// TODO Create BidHistory class.
 	private Vector<Bid> bidHistory = new Vector<Bid>();
 
-	private Card.Suit trump = null;
-
 	private Talon talon = new Talon();
 
 	private Map<Player, Card> trick = new HashMap<Player, Card>();
@@ -33,14 +31,6 @@ class Board {
 
 	public void setState(State state) {
 		this.state = state;
-	}
-
-	public Card.Suit getTrump() {
-		return trump;
-	}
-
-	public void setTrump(Card.Suit trump) {
-		this.trump = trump;
 	}
 
 	public Talon getTalon() {
@@ -129,8 +119,8 @@ class Board {
 	}
 
 	public void resetRound() {
+		Card.Suit.removeTrump();
 		bidHistory.clear();
-		trump = null;
 		talon.reset();
 		trick.clear();
 		for (Player player : players) {
@@ -248,7 +238,7 @@ class Board {
 		AiBidder bidder = (AiBidder) players[currentBidderIndex];
 
 		int score = 0;
-		if(bidHistory.isEmpty() == false) {
+		if (bidHistory.isEmpty() == false) {
 			score = bidHistory.lastElement().getScore();
 		}
 

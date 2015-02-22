@@ -15,14 +15,14 @@ class ComputerPlayer extends Player implements AiBidder {
 	@Override
 	public Bid doBid(int currentValue) {
 		Bid bid = null;
-		
-		//TODO 
-		if(Util.PRNG.nextDouble() < 0.95) {
-			bid = new Bid(currentValue+1, this);
+
+		// TODO
+		if (Util.PRNG.nextDouble() < 0.95) {
+			bid = new Bid(currentValue + 1, this);
 		} else {
 			bid = new Bid(0, this);
 		}
-		
+
 		return bid;
 	}
 

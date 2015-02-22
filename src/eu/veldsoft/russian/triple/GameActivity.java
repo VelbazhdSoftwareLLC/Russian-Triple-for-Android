@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.Menu;
@@ -18,16 +19,16 @@ public class GameActivity extends Activity {
 	private Runnable biddingThread = new Runnable() {
 		@Override
 		public void run() {
-			if(board.getCurrnetBidder() instanceof HumanPlayer){
-				//TODO Run activitiy.
-			} else if(board.getCurrnetBidder() instanceof ComputerPlayer) {
+			if (board.getCurrnetBidder() instanceof HumanPlayer) {
+				// TODO Run activitiy.
+			} else if (board.getCurrnetBidder() instanceof ComputerPlayer) {
 				board.doBid();
 			}
-			
-			//TODO At the end of the bidding.
-			//handler.removeCallbacks(this);
-			//return;
-			
+
+			// TODO At the end of the bidding.
+			// handler.removeCallbacks(this);
+			// return;
+
 			handler.postDelayed(this, 100);
 		}
 	};
@@ -76,15 +77,15 @@ public class GameActivity extends Activity {
 			playersInfo[i].setText(players[i]);
 		}
 
-		if (board.getTrump() == null) {
+		if (Card.Suit.isTrumpSelected() == false) {
 			trumpImage.setImageBitmap(null);
-		} else if (board.getTrump() == Card.Suit.SPADES) {
+		} else if (Card.Suit.SPADES.isTrump() == true) {
 			trumpImage.setImageResource(R.drawable.spades);
-		} else if (board.getTrump() == Card.Suit.HEARTS) {
+		} else if (Card.Suit.HEARTS.isTrump() == true) {
 			trumpImage.setImageResource(R.drawable.hearts);
-		} else if (board.getTrump() == Card.Suit.CLUBS) {
+		} else if (Card.Suit.CLUBS.isTrump() == true) {
 			trumpImage.setImageResource(R.drawable.clubs);
-		} else if (board.getTrump() == Card.Suit.DIAMONDS) {
+		} else if (Card.Suit.DIAMONDS.isTrump() == true) {
 			trumpImage.setImageResource(R.drawable.diamonds);
 		}
 
@@ -212,6 +213,14 @@ public class GameActivity extends Activity {
 			board.deal();
 			redraw();
 			handler.postDelayed(biddingThread, 0);
+			break;
+		case R.id.help:
+			GameActivity.this.startActivity(new Intent(GameActivity.this,
+					HelpActivity.class));
+			break;
+		case R.id.about:
+			GameActivity.this.startActivity(new Intent(GameActivity.this,
+					AboutActivity.class));
 			break;
 		case R.id.exit_game:
 			finish();

@@ -9,6 +9,12 @@ class Bid {
 
 	private Player player;
 
+	public Bid(Bid bid) {
+		super();
+		this.score = bid.score;
+		this.player = bid.player;
+	}
+
 	public Bid(int score, Player player) {
 		super();
 		this.score = score;
