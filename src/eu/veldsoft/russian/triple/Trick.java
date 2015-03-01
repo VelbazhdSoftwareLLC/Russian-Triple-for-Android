@@ -5,6 +5,7 @@ import java.util.Map;
 import java.util.Vector;
 
 class Trick {
+	//TODO Player trick tracking can be useful.
 	private Vector<Card> cards = new Vector<Card>();
 
 	public Trick(Map<Player, Card> trick) {

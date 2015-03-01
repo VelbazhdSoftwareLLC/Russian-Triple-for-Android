@@ -1,0 +1,41 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="${relativePackage}.${activityClass}" >
+
+    <Spinner
+        android:id="@+id/bidding"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:entries="@array/bidding_values" />
+
+    <!-- TODO Current bid value. -->
+    
+    <Button
+        android:id="@+id/plus_one"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/plus_ten"
+        android:layout_centerHorizontal="true"
+        android:text="@string/plus_one_caption" />
+    
+    <Button
+        android:id="@+id/plus_ten"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/pass"
+        android:layout_centerHorizontal="true"
+        android:text="@string/plus_ten_caption" />
+    
+    <Button
+        android:id="@+id/pass"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:text="@string/pass_caption" />
+    
+</RelativeLayout>

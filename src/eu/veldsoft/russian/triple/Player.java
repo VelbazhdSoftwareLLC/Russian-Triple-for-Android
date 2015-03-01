@@ -11,6 +11,7 @@ class Player {
 
 	private Vector<Trick> tricks = new Vector<Trick>();
 
+	//TODO May be it should be in Bidding class.
 	private boolean canBid = false;
 
 	public Player(String name) {

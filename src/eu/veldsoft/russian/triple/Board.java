@@ -11,19 +11,14 @@ class Board {
 
 	private int firstInRoundIndex = HUMAN_PLAYER_INDEX;
 
-	private int currentBidderIndex = HUMAN_PLAYER_INDEX;
-
-	private Bid currentBid = null;
-
-	// TODO Create BidHistory class.
-	private Vector<Bid> bidHistory = new Vector<Bid>();
-
-	private Talon talon = new Talon();
+	private Talon talon = null;
 
 	private Map<Player, Card> trick = new HashMap<Player, Card>();
 
 	private Player players[] = { new ComputerPlayer("Player 1"),
 			new HumanPlayer("Player 2"), new ComputerPlayer("Player 3") };
+
+	private Bidding bidding = null;
 
 	public State getState() {
 		return state;
@@ -67,10 +62,6 @@ class Board {
 
 	public void setPlayers(Player[] players) {
 		this.players = players;
-	}
-
-	public Player getCurrnetBidder() {
-		return (players[currentBidderIndex]);
 	}
 
 	public String[] getPlayersInfo() {
@@ -120,8 +111,8 @@ class Board {
 
 	public void resetRound() {
 		Card.Suit.removeTrump();
-		bidHistory.clear();
-		talon.reset();
+		bidding = new Bidding(players, firstInRoundIndex);
+		talon = new Talon();
 		trick.clear();
 		for (Player player : players) {
 			player.resetRound();
@@ -132,7 +123,6 @@ class Board {
 				break;
 			}
 		}
-		currentBidderIndex = firstInRoundIndex;
 	}
 
 	public void deal() {
@@ -228,39 +218,5 @@ class Board {
 
 			index++;
 		}
-	}
-
-	public boolean doBid() {
-		if (players[currentBidderIndex] instanceof AiBidder == false) {
-			return false;
-		}
-
-		AiBidder bidder = (AiBidder) players[currentBidderIndex];
-
-		int score = 0;
-		if (bidHistory.isEmpty() == false) {
-			score = bidHistory.lastElement().getScore();
-		}
-
-		if (bidder.canDoBid(score) == true) {
-			Bid bid = bidder.doBid(score);
-
-			if (bid.valid() == true) {
-				currentBid = bid;
-				bidHistory.add(currentBid);
-				return true;
-			} else {
-				/*
-				 * Pass.
-				 */
-			}
-		} else {
-			/*
-			 * Pass.
-			 */
-		}
-
-		return false;
-
 	}
 }

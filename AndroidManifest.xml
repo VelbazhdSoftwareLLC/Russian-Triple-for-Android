@@ -31,6 +31,10 @@
             android:name=".AboutActivity"
             android:label="@string/title_activity_about" >
         </activity>
+        <activity
+            android:name=".BiddingActivity"
+            android:label="@string/title_activity_bidding" >
+        </activity>
     </application>
 
 </manifest>

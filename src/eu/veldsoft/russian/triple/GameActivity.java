@@ -19,11 +19,11 @@ public class GameActivity extends Activity {
 	private Runnable biddingThread = new Runnable() {
 		@Override
 		public void run() {
-			if (board.getCurrnetBidder() instanceof HumanPlayer) {
-				// TODO Run activitiy.
-			} else if (board.getCurrnetBidder() instanceof ComputerPlayer) {
-				board.doBid();
-			}
+			// if (board.getCurrnetBidder() instanceof HumanPlayer) {
+			// // TODO Run activitiy.
+			// } else if (board.getCurrnetBidder() instanceof ComputerPlayer) {
+			// board.doBid();
+			// }
 
 			// TODO At the end of the bidding.
 			// handler.removeCallbacks(this);
