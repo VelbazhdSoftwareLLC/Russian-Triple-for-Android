@@ -213,14 +213,15 @@ public class GameActivity extends Activity {
 			board.deal();
 			redraw();
 			handler.postDelayed(biddingThread, 0);
+			startActivityForResult((new Intent(GameActivity.this, BiddingActivity.class))
+					.putExtra(BiddingActivity.EXTRA_CURRENT_BID_KEY, 121)
+					.putExtra(BiddingActivity.EXTRA_MAX_BID_KEY, 140), 0);
 			break;
 		case R.id.help:
-			GameActivity.this.startActivity(new Intent(GameActivity.this,
-					HelpActivity.class));
+			startActivity(new Intent(GameActivity.this, HelpActivity.class));
 			break;
 		case R.id.about:
-			GameActivity.this.startActivity(new Intent(GameActivity.this,
-					AboutActivity.class));
+			startActivity(new Intent(GameActivity.this, AboutActivity.class));
 			break;
 		case R.id.exit_game:
 			finish();
