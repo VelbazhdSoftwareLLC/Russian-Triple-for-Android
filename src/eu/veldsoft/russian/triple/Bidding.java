@@ -9,28 +9,27 @@ import java.util.Vector;
  */
 class Bidding {
 	/**
-	 * Keep track of the players from the board. 
+	 * Keep track of the players from the board.
 	 */
 	private Player players[] = null;
 
 	// TODO Create Bidding class.
 	private int currentBidderIndex = -1;
 
-	
 	// TODO Create BidHistory class.
 	private Vector<Bid> bidHistory = new Vector<Bid>();
-	
+
 	public Bidding(Player players[], int firstBidderIndex) {
 		this.players = players;
 		currentBidderIndex = firstBidderIndex;
 	}
 
-	public Player getCurrnetBidder() {
+	Player getCurrnetBidder() {
 		return (players[currentBidderIndex]);
 	}
 
-	public boolean doBid() {
-		//TODO Handle human bidder too.
+	boolean doBid() {
+		// TODO Handle human bidder too.
 		if (players[currentBidderIndex] instanceof AiBidder == false) {
 			return false;
 		}
@@ -63,28 +62,28 @@ class Bidding {
 
 		return false;
 	}
-	
-	public boolean hasLast() {
+
+	boolean hasLast() {
 		return !bidHistory.isEmpty();
 	}
-	
-	public Bid last() {
-		if(bidHistory.isEmpty() == false) {
+
+	Bid last() {
+		if (bidHistory.isEmpty() == false) {
 			return bidHistory.lastElement();
 		}
-		
+
 		return null;
 	}
-	
-	public boolean hasWinner() {
+
+	boolean hasWinner() {
 		return !bidHistory.isEmpty();
 	}
-	
-	public Bid winner() {
-		if(hasWinner() == true) {
+
+	Bid winner() {
+		if (hasWinner() == true) {
 			return bidHistory.lastElement();
 		}
-		
+
 		return null;
 	}
 }

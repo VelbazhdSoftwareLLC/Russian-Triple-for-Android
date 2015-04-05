@@ -15,7 +15,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 public class GameActivity extends Activity {
+	private static int BID_REQUEST_ID = 1;
 
+	// TODO Reorganize in bidding class.
 	private Runnable biddingThread = new Runnable() {
 		@Override
 		public void run() {
@@ -195,6 +197,18 @@ public class GameActivity extends Activity {
 	}
 
 	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		if (resultCode == RESULT_OK && requestCode == BID_REQUEST_ID) {
+			// TODO Handle bid in the bidding process. Share this info with the
+			// thread.
+			int bidValue = data.getIntExtra(
+					BiddingActivity.EXTRA_RESULT_BID_KEY, 0);
+			boolean passValue = data.getBooleanExtra(
+					BiddingActivity.EXTRA_RESULT_BID_KEY, true);
+		}
+	}
+
+	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		MenuInflater inflater = getMenuInflater();
 		inflater.inflate(R.menu.game_option_menu, menu);
@@ -213,9 +227,13 @@ public class GameActivity extends Activity {
 			board.deal();
 			redraw();
 			handler.postDelayed(biddingThread, 0);
-			startActivityForResult((new Intent(GameActivity.this, BiddingActivity.class))
-					.putExtra(BiddingActivity.EXTRA_CURRENT_BID_KEY, 121)
-					.putExtra(BiddingActivity.EXTRA_MAX_BID_KEY, 140), 0);
+			// TODO Test call only.
+			startActivityForResult(
+					(new Intent(GameActivity.this, BiddingActivity.class))
+							.putExtra(BiddingActivity.EXTRA_CURRENT_BID_KEY,
+									121).putExtra(
+									BiddingActivity.EXTRA_MAX_BID_KEY, 140),
+					BID_REQUEST_ID);
 			break;
 		case R.id.help:
 			startActivity(new Intent(GameActivity.this, HelpActivity.class));

@@ -20,23 +20,23 @@ class Board {
 
 	private Bidding bidding = null;
 
-	public State getState() {
+	State getState() {
 		return state;
 	}
 
-	public void setState(State state) {
+	void setState(State state) {
 		this.state = state;
 	}
 
-	public Talon getTalon() {
+	Talon getTalon() {
 		return talon;
 	}
 
-	public void setTalon(Talon talon) {
+	void setTalon(Talon talon) {
 		this.talon = talon;
 	}
 
-	public Vector<Card> getTrick() {
+	Vector<Card> getTrick() {
 		Vector<Card> trick = new Vector<Card>();
 
 		for (Player player : players) {
@@ -46,7 +46,7 @@ class Board {
 		return trick;
 	}
 
-	public void setTrick(Vector<Card> trick) {
+	void setTrick(Vector<Card> trick) {
 		// TODO Check for number of cards in the trick.
 
 		this.trick.clear();
@@ -56,15 +56,15 @@ class Board {
 		}
 	}
 
-	public Player[] getPlayers() {
+	Player[] getPlayers() {
 		return players;
 	}
 
-	public void setPlayers(Player[] players) {
+	void setPlayers(Player[] players) {
 		this.players = players;
 	}
 
-	public String[] getPlayersInfo() {
+	String[] getPlayersInfo() {
 		String info[] = new String[players.length];
 
 		for (int p = 0; p < players.length; p++) {
@@ -74,7 +74,7 @@ class Board {
 		return info;
 	}
 
-	public Card[] getCardsOnTheBoard() {
+	Card[] getCardsOnTheBoard() {
 		Card cards[] = { null, null, null, null, null, null, null, null, null,
 				null, null, null, null, null, null, null, null, null, null,
 				null, null, null, null, null, null, null, null, null, null,
@@ -103,13 +103,13 @@ class Board {
 		return cards;
 	}
 
-	public void resetGame() {
+	void resetGame() {
 		state = State.STARTING;
 		firstInRoundIndex = Util.PRNG.nextInt(players.length);
 		resetRound();
 	}
 
-	public void resetRound() {
+	void resetRound() {
 		Card.Suit.removeTrump();
 		bidding = new Bidding(players, firstInRoundIndex);
 		talon = new Talon();
@@ -125,7 +125,7 @@ class Board {
 		}
 	}
 
-	public void deal() {
+	void deal() {
 		state = State.DEALING;
 
 		Deck.reset();
@@ -158,7 +158,7 @@ class Board {
 		state = State.BIDDING;
 	}
 
-	public void click(int selected) {
+	void click(int selected) {
 		/*
 		 * Players hands.
 		 */

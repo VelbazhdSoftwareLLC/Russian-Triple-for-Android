@@ -11,69 +11,69 @@ class Player {
 
 	private Vector<Trick> tricks = new Vector<Trick>();
 
-	//TODO May be it should be in Bidding class.
+	// TODO May be it should be in Bidding class.
 	private boolean canBid = false;
 
 	public Player(String name) {
 		this.name = name;
 	}
 
-	public String getName() {
+	String getName() {
 		return name;
 	}
 
-	public void setName(String name) {
+	void setName(String name) {
 		this.name = name;
 	}
 
-	public int getScore() {
+	int getScore() {
 		return score;
 	}
 
-	public void setScore(int score) {
+	void setScore(int score) {
 		this.score = score;
 	}
 
-	public Hand getHand() {
+	Hand getHand() {
 		return hand;
 	}
 
-	public void setHand(Hand hand) {
+	void setHand(Hand hand) {
 		this.hand = hand;
 	}
 
-	public Vector<Trick> getTricks() {
+	Vector<Trick> getTricks() {
 		return tricks;
 	}
 
-	public void setTricks(Vector<Trick> tricks) {
+	void setTricks(Vector<Trick> tricks) {
 		this.tricks = tricks;
 	}
 
-	public void endBidding() {
-		canBid = false;
-	}
-
-	public boolean isBidding() {
+	boolean isBidding() {
 		return canBid;
 	}
 
+	void stopBidding() {
+		canBid = false;
+	}
+
 	// TODO Create Round class.
-	public void resetRound() {
+	void resetRound() {
 		canBid = true;
 		hand.reset();
 		tricks.clear();
 	}
 
-	public void recieve(Card card) {
+	void recieve(Card card) {
 		hand.recieve(card);
 	}
 
-	public void recieve(Trick trick) {
+	void recieve(Trick trick) {
 		tricks.add(trick);
 	}
 
-	public void prepare() {
+	void prepare() {
 		hand.sort();
 	}
 }

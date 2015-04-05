@@ -6,23 +6,23 @@ import java.util.Vector;
 class Talon {
 	private Vector<Card> cards = new Vector<Card>();
 
-	public Vector<Card> getCards() {
+	Vector<Card> getCards() {
 		return cards;
 	}
 
-	public void setCards(Vector<Card> cards) {
+	void setCards(Vector<Card> cards) {
 		this.cards = cards;
 	}
 
-	public void recieve(Card card) {
+	void recieve(Card card) {
 		cards.add(card);
 	}
 
-	public void reset() {
+	void reset() {
 		cards.clear();
 	}
 
-	public void sort() {
+	void sort() {
 		Collections.sort(cards, Util.noTrumpComparator);
 	}
 }

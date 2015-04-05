@@ -15,15 +15,15 @@ class Card {
 			this.name = name;
 		}
 
-		public int getPoints() {
+		int getPoints() {
 			return points;
 		}
 
-		public String getName() {
+		String getName() {
 			return name;
 		}
 
-		public boolean isAdjacentTo(Rank rank) {
+		boolean isAdjacentTo(Rank rank) {
 			// TODO Do not use internal numbering.
 
 			if ((this.points + 1) == rank.points) {
@@ -48,14 +48,14 @@ class Card {
 
 		private boolean trump = false;
 
-		static public void removeTrump() {
+		static void removeTrump() {
 			// TODO May be it is not working!
 			for (Suit suit : Suit.values()) {
 				suit.trump = false;
 			}
 		}
 
-		static public boolean isTrumpSelected() {
+		static boolean isTrumpSelected() {
 			for (Suit suit : Suit.values()) {
 				if (suit.isTrump() == true) {
 					return true;
@@ -70,20 +70,20 @@ class Card {
 			this.name = name;
 		}
 
-		public int getOrder() {
+		int getOrder() {
 			return order;
 		}
 
-		public String getName() {
+		String getName() {
 			return name;
 		}
 
-		public void setTrump() {
+		void setTrump() {
 			removeTrump();
 			trump = true;
 		}
 
-		public boolean isTrump() {
+		boolean isTrump() {
 			return (trump);
 		}
 	}
@@ -148,71 +148,71 @@ class Card {
 		return true;
 	}
 
-	public Card.Rank getRank() {
+	Card.Rank getRank() {
 		return rank;
 	}
 
-	public void setRank(Card.Rank rank) {
+	void setRank(Card.Rank rank) {
 		this.rank = rank;
 	}
 
-	public Card.Suit getSuit() {
+	Card.Suit getSuit() {
 		return suit;
 	}
 
-	public void setSuit(Card.Suit suit) {
+	void setSuit(Card.Suit suit) {
 		this.suit = suit;
 	}
 
-	public boolean isFaceUp() {
+	boolean isFaceUp() {
 		return faceUp;
 	}
 
-	public boolean isFaceDown() {
+	boolean isFaceDown() {
 		return !faceUp;
 	}
 
-	public void faceUp() {
+	void faceUp() {
 		faceUp = true;
 	}
 
-	public void faceDown() {
+	void faceDown() {
 		faceUp = false;
 	}
 
-	public boolean isHighlighted() {
+	boolean isHighlighted() {
 		return highlighted;
 	}
 
-	public boolean isUnhighlighted() {
+	boolean isUnhighlighted() {
 		return !highlighted;
 	}
 
-	public void highlight() {
+	void highlight() {
 		highlighted = true;
 	}
 
-	public void unhighlight() {
+	void unhighlight() {
 		highlighted = false;
 	}
 
-	public void visible() {
+	void visible() {
 		visible = true;
 	}
 
-	public void invisible() {
+	void invisible() {
 		visible = false;
 	}
 
-	public boolean isVisible() {
+	boolean isVisible() {
 		return visible;
 	}
 
-	public boolean isInvisible() {
+	boolean isInvisible() {
 		return !visible;
 	}
 
-	public void flip() {
+	void flip() {
 		faceUp = !faceUp;
 	}
 }

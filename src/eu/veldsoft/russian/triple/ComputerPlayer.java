@@ -26,4 +26,9 @@ class ComputerPlayer extends Player implements AiBidder {
 		return bid;
 	}
 
+	@Override
+	public void endBidding() {
+		stopBidding();
+	}
+
 }

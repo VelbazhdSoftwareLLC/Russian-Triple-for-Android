@@ -1,32 +1,49 @@
 package eu.veldsoft.russian.triple;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
-import android.widget.Spinner;
-import android.widget.SpinnerAdapter;
-import android.widget.TextView;
 import android.widget.Button;
+import android.widget.Spinner;
+import android.widget.TextView;
 
 public class BiddingActivity extends Activity {
 
-	public static final String EXTRA_CURRENT_BID_KEY = "eu.veldsoft.russian.triple.currentBidKey";
+	static final String EXTRA_CURRENT_BID_KEY = "eu.veldsoft.russian.triple.currentBidKey";
 
-	public static final String EXTRA_MAX_BID_KEY = "eu.veldsoft.russian.triple.maxBidKey";
+	static final String EXTRA_MAX_BID_KEY = "eu.veldsoft.russian.triple.maxBidKey";
+
+	static final String EXTRA_RESULT_BID_KEY = "eu.veldsoft.russian.triple.resultBidKey";
+
+	static final String EXTRA_PASS_BID_KEY = "eu.veldsoft.russian.triple.passBidKey";
+
+	static final int PASS_VALUE = 0;
+
+	private int last = 0;
 
 	private int current = 0;
 
 	private int maximum = 0;
 
-	private void setCurrentBid() {
+	private void setCurrentBid(int current) {
 		if (current <= 0) {
 			return;
 		}
 
-		((TextView) findViewById(R.id.bidValue)).setText("" + current);
+		/*
+		 * Current bid can not be more than maximum possible.
+		 */
+		if (current > maximum) {
+			return;
+		}
+
+		this.current = current;
+
+		((TextView) findViewById(R.id.bidValue)).setText("" + last);
 
 		Spinner spinner = (Spinner) findViewById(R.id.bidding);
 		for (int i = 0; i < spinner.getCount(); i++) {
@@ -42,10 +59,10 @@ public class BiddingActivity extends Activity {
 	protected void onStart() {
 		super.onStart();
 
-		current = getIntent().getIntExtra(EXTRA_CURRENT_BID_KEY, 0);
+		last = current = getIntent().getIntExtra(EXTRA_CURRENT_BID_KEY, 0);
 		maximum = getIntent().getIntExtra(EXTRA_MAX_BID_KEY, 200);
 
-		setCurrentBid();
+		setCurrentBid(current);
 	}
 
 	@Override
@@ -53,12 +70,14 @@ public class BiddingActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_bidding);
 
-
 		((Button) findViewById(R.id.pass))
 				.setOnClickListener(new OnClickListener() {
 					@Override
 					public void onClick(View v) {
-						//TODO Close activity without bid.
+						setResult(Activity.RESULT_OK, (new Intent().putExtra(
+								EXTRA_RESULT_BID_KEY, PASS_VALUE).putExtra(
+								EXTRA_PASS_BID_KEY, true)));
+						finish();
 					}
 				});
 
@@ -66,7 +85,7 @@ public class BiddingActivity extends Activity {
 				.setOnClickListener(new OnClickListener() {
 					@Override
 					public void onClick(View v) {
-						//TODO Add to user bid.
+						setCurrentBid(current + 1);
 					}
 				});
 
@@ -74,7 +93,7 @@ public class BiddingActivity extends Activity {
 				.setOnClickListener(new OnClickListener() {
 					@Override
 					public void onClick(View v) {
-						//TODO Add to user bid.
+						setCurrentBid(current + 10);
 					}
 				});
 
@@ -82,7 +101,10 @@ public class BiddingActivity extends Activity {
 				.setOnClickListener(new OnClickListener() {
 					@Override
 					public void onClick(View v) {
-						//TODO Check spinner value and close activity.
+						setResult(Activity.RESULT_OK, (new Intent().putExtra(
+								EXTRA_RESULT_BID_KEY, current).putExtra(
+								EXTRA_PASS_BID_KEY, false)));
+						finish();
 					}
 				});
 
@@ -101,7 +123,7 @@ public class BiddingActivity extends Activity {
 						int value = new Integer(parent.getItemAtPosition(
 								position).toString()).intValue();
 						if (value <= current || value > maximum) {
-							setCurrentBid();
+							setCurrentBid(current);
 						}
 					}
 
