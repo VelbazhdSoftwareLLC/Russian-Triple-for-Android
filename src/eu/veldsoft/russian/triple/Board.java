@@ -11,6 +11,8 @@ class Board {
 
 	private int firstInRoundIndex = HUMAN_PLAYER_INDEX;
 
+	private Bidding bidding = null;
+
 	private Talon talon = null;
 
 	private Map<Player, Card> trick = new HashMap<Player, Card>();
@@ -18,14 +20,16 @@ class Board {
 	private Player players[] = { new ComputerPlayer("Player 1"),
 			new HumanPlayer("Player 2"), new ComputerPlayer("Player 3") };
 
-	private Bidding bidding = null;
-
 	State getState() {
 		return state;
 	}
 
 	void setState(State state) {
 		this.state = state;
+	}
+
+	public Bidding getBidding() {
+		return bidding;
 	}
 
 	Talon getTalon() {

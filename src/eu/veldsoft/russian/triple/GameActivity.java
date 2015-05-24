@@ -13,6 +13,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class GameActivity extends Activity {
 	private static int BID_REQUEST_ID = 1;
@@ -21,17 +22,33 @@ public class GameActivity extends Activity {
 	private Runnable biddingThread = new Runnable() {
 		@Override
 		public void run() {
-			// if (board.getCurrnetBidder() instanceof HumanPlayer) {
-			// // TODO Run activitiy.
-			// } else if (board.getCurrnetBidder() instanceof ComputerPlayer) {
-			// board.doBid();
-			// }
+			if (board.getState() != State.BIDDING) {
+				handler.postDelayed(this, 1000);
+			} else if (board.getState() == State.BIDDING
+					&& board.getBidding().getCurrnetBidder() instanceof HumanPlayer) {
+				int value = board.getBidding().hasLast() == true ? board
+						.getBidding().last().getScore() : 0;
 
-			// TODO At the end of the bidding.
-			// handler.removeCallbacks(this);
-			// return;
+				Bid bid = new Bid(value, board.getBidding().getCurrnetBidder());
 
-			handler.postDelayed(this, 100);
+				startActivityForResult(
+						(new Intent(GameActivity.this, BiddingActivity.class))
+								.putExtra(
+										BiddingActivity.EXTRA_CURRENT_BID_KEY,
+										value).putExtra(
+										BiddingActivity.EXTRA_MAX_BID_KEY,
+										bid.maximum()), BID_REQUEST_ID);
+			} else if (board.getState() == State.BIDDING
+					&& board.getBidding().getCurrnetBidder() instanceof ComputerPlayer) {
+				Toast.makeText(
+						GameActivity.this,
+						"*** "
+								+ board.getBidding().getCurrnetBidder()
+										.getName(), Toast.LENGTH_SHORT).show();
+				handler.postDelayed(this, 2500);
+			} else {
+				throw (new RuntimeException("Invalid bidder."));
+			}
 		}
 	};
 
@@ -120,6 +137,8 @@ public class GameActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_game);
 
+		handler.postDelayed(biddingThread, 0);
+
 		playersInfo[0] = (TextView) findViewById(R.id.playerInfo01);
 		playersInfo[1] = (TextView) findViewById(R.id.playerInfo02);
 		playersInfo[2] = (TextView) findViewById(R.id.playerInfo03);
@@ -204,7 +223,9 @@ public class GameActivity extends Activity {
 			int bidValue = data.getIntExtra(
 					BiddingActivity.EXTRA_RESULT_BID_KEY, 0);
 			boolean passValue = data.getBooleanExtra(
-					BiddingActivity.EXTRA_RESULT_BID_KEY, true);
+					BiddingActivity.EXTRA_PASS_BID_KEY, true);
+
+			handler.postDelayed(biddingThread, 500);
 		}
 	}
 
@@ -226,14 +247,6 @@ public class GameActivity extends Activity {
 			board.resetRound();
 			board.deal();
 			redraw();
-			handler.postDelayed(biddingThread, 0);
-			// TODO Test call only.
-			startActivityForResult(
-					(new Intent(GameActivity.this, BiddingActivity.class))
-							.putExtra(BiddingActivity.EXTRA_CURRENT_BID_KEY,
-									121).putExtra(
-									BiddingActivity.EXTRA_MAX_BID_KEY, 140),
-					BID_REQUEST_ID);
 			break;
 		case R.id.help:
 			startActivity(new Intent(GameActivity.this, HelpActivity.class));
@@ -247,5 +260,10 @@ public class GameActivity extends Activity {
 			break;
 		}
 		return true;
+	}
+
+	@Override
+	public void onDestroy() {
+		handler.removeCallbacks(biddingThread);
 	}
 }

@@ -13,7 +13,6 @@ class Bidding {
 	 */
 	private Player players[] = null;
 
-	// TODO Create Bidding class.
 	private int currentBidderIndex = -1;
 
 	// TODO Create BidHistory class.

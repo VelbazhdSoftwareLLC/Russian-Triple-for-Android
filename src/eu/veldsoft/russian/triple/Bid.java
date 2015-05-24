@@ -29,7 +29,7 @@ class Bid {
 		return player;
 	}
 
-	public boolean valid() {
+	public int maximum() {
 		int numberOfMarriages = 0;
 
 		Vector<Card> cards = player.getHand().getCards();
@@ -50,19 +50,27 @@ class Bid {
 			}
 		}
 
-		if (score > 200) {
-			return false;
+		if (numberOfMarriages < 1) {
+			return 120;
 		}
 
-		if (score > 180 && numberOfMarriages < 3) {
-			return false;
+		if (numberOfMarriages < 2) {
+			return 160;
 		}
 
-		if (score > 160 && numberOfMarriages < 2) {
-			return false;
+		if (numberOfMarriages < 3) {
+			return 180;
 		}
 
-		if (score > 120 && numberOfMarriages < 1) {
+		if (numberOfMarriages < 4) {
+			return 200;
+		}
+
+		return 0;
+	}
+
+	public boolean valid() {
+		if (score > maximum()) {
 			return false;
 		}
 
