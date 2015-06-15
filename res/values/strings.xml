@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    
+
     <string name="hello_world">Hello world!</string>
-    
+
     <string-array name="bidding_values">
         <item>-</item>
         <item>100</item>
@@ -125,6 +125,5 @@
     <string name="done_capion">Done</string>
     <string name="player_bid_label">"Your Bid: "</string>
     <string name="title_activity_splash">Russian Triple</string>
-    <string name="banner_html"></string>
 
 </resources>
