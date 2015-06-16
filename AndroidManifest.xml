@@ -35,6 +35,13 @@
         <activity
             android:name=".SplashActivity"
             android:label="@string/title_activity_splash" >
+            <meta-data
+                android:name="timeout"
+                android:value="3000" />
+            <meta-data
+                android:name="redirect"
+                android:value="GameActivity.class" />
+            
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

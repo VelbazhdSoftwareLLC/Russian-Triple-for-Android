@@ -125,5 +125,6 @@
     <string name="done_capion">Done</string>
     <string name="player_bid_label">"Your Bid: "</string>
     <string name="title_activity_splash">Russian Triple</string>
+    <string name="redirect_activity_is_missing_message">Redirect activity is missing!</string>
 
 </resources>
