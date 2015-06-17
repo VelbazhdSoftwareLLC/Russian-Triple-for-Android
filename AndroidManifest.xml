@@ -34,14 +34,15 @@
         </activity>
         <activity
             android:name=".SplashActivity"
-            android:label="@string/title_activity_splash" >
+            android:label="@string/title_activity_splash"
+            android:noHistory="true" >
             <meta-data
                 android:name="timeout"
                 android:value="3000" />
             <meta-data
                 android:name="redirect"
-                android:value="GameActivity.class" />
-            
+                android:value="eu.veldsoft.russian.triple.GameActivity" />
+
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

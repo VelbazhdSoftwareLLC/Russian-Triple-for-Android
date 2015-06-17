@@ -264,6 +264,8 @@ public class GameActivity extends Activity {
 
 	@Override
 	public void onDestroy() {
+		super.onDestroy();
+		
 		handler.removeCallbacks(biddingThread);
 	}
 }
