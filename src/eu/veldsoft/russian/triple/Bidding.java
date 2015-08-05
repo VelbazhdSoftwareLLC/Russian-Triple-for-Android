@@ -23,12 +23,32 @@ class Bidding {
 		currentBidderIndex = firstBidderIndex;
 	}
 
-	Player getCurrnetBidder() {
+	Player getCurrentBidder() {
 		return (players[currentBidderIndex]);
 	}
 
+	// TODO Handle human bidder too.
+	boolean doBid(int value) {
+		if (players[currentBidderIndex] instanceof HumanPlayer == false) {
+			return false;
+		}
+
+		Bid bid = new Bid(value, players[currentBidderIndex]);
+
+		if (bid.valid() == true) {
+			bidHistory.add(bid);
+			return true;
+		} else {
+			/*
+			 * Pass.
+			 */
+			players[currentBidderIndex].stopBidding();
+		}
+
+		return false;
+	}
+
 	boolean doBid() {
-		// TODO Handle human bidder too.
 		if (players[currentBidderIndex] instanceof AiBidder == false) {
 			return false;
 		}
@@ -84,5 +104,25 @@ class Bidding {
 		}
 
 		return null;
+	}
+
+	public boolean nextBidder() {
+		boolean biddingInProgress = false;
+		for (Player player : players) {
+			if (player.isBidding() == true) {
+				biddingInProgress = true;
+				break;
+			}
+		}
+
+		if (biddingInProgress == false) {
+			return false;
+		}
+
+		do {
+			currentBidderIndex = (currentBidderIndex + 1) % players.length;
+		} while (players[currentBidderIndex].isBidding() == false);
+
+		return true;
 	}
 }

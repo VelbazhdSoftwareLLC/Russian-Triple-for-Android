@@ -7,19 +7,21 @@ class ComputerPlayer extends Player implements AiBidder {
 	}
 
 	@Override
-	public boolean canDoBid(int currentValue) {
-		// TODO
-		return false;
-	}
-
-	@Override
 	public Bid doBid(int currentValue) {
 		Bid bid = null;
 
-		// TODO
+		// TODO Implement better AI.
 		if (Util.PRNG.nextDouble() < 0.95) {
-			bid = new Bid(currentValue + 1, this);
+			if (currentValue < 100) {
+				bid = new Bid(100, this);
+			} else {
+				bid = new Bid(currentValue + 1, this);
+			}
 		} else {
+			/*
+			 * Pass.
+			 */
+			
 			bid = new Bid(0, this);
 		}
 
@@ -29,6 +31,11 @@ class ComputerPlayer extends Player implements AiBidder {
 	@Override
 	public void endBidding() {
 		stopBidding();
+	}
+
+	@Override
+	public boolean canDoBid(int currentValue) {
+		return isBidding();
 	}
 
 }

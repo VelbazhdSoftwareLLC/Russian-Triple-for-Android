@@ -25,11 +25,11 @@ public class GameActivity extends Activity {
 			if (board.getState() != State.BIDDING) {
 				handler.postDelayed(this, 1000);
 			} else if (board.getState() == State.BIDDING
-					&& board.getBidding().getCurrnetBidder() instanceof HumanPlayer) {
+					&& board.getBidding().getCurrentBidder() instanceof HumanPlayer) {
 				int value = board.getBidding().hasLast() == true ? board
 						.getBidding().last().getScore() : 0;
 
-				Bid bid = new Bid(value, board.getBidding().getCurrnetBidder());
+				Bid bid = new Bid(value, board.getBidding().getCurrentBidder());
 
 				startActivityForResult(
 						(new Intent(GameActivity.this, BiddingActivity.class))
@@ -39,11 +39,17 @@ public class GameActivity extends Activity {
 										BiddingActivity.EXTRA_MAX_BID_KEY,
 										bid.maximum()), BID_REQUEST_ID);
 			} else if (board.getState() == State.BIDDING
-					&& board.getBidding().getCurrnetBidder() instanceof ComputerPlayer) {
+					&& board.getBidding().getCurrentBidder() instanceof ComputerPlayer) {
+				board.getBidding().doBid();
+				board.getBidding().nextBidder();
+				redraw();
+
+				// TODO Handle bid in the bidding process. Share this info with
+				// the thread.
 				Toast.makeText(
 						GameActivity.this,
 						"*** "
-								+ board.getBidding().getCurrnetBidder()
+								+ board.getBidding().getCurrentBidder()
 										.getName(), Toast.LENGTH_SHORT).show();
 				handler.postDelayed(this, 2500);
 			} else {
@@ -129,6 +135,14 @@ public class GameActivity extends Activity {
 			if (cards[i].isHighlighted() == true) {
 				cardsImages[i].setAlpha(0.5F);
 			}
+		}
+
+		if (board.getState() == State.BIDDING
+				&& board.getBidding().hasLast() == true) {
+			((TextView) findViewById(R.id.currentBid)).setText(""
+					+ board.getBidding().last().getScore());
+		} else {
+			((TextView) findViewById(R.id.currentBid)).setText("");
 		}
 	}
 
@@ -225,6 +239,14 @@ public class GameActivity extends Activity {
 			boolean passValue = data.getBooleanExtra(
 					BiddingActivity.EXTRA_PASS_BID_KEY, true);
 
+			if (passValue == true) {
+				board.getBidding().getCurrentBidder().stopBidding();
+			} else {
+				board.getBidding().doBid(bidValue);
+			}
+			board.getBidding().nextBidder();
+			redraw();
+
 			handler.postDelayed(biddingThread, 500);
 		}
 	}
@@ -265,7 +287,7 @@ public class GameActivity extends Activity {
 	@Override
 	public void onDestroy() {
 		super.onDestroy();
-		
+
 		handler.removeCallbacks(biddingThread);
 	}
 }

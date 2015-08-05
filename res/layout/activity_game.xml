@@ -346,4 +346,14 @@
         android:rotation="270"
         android:text="" />
 
+    <TextView
+        android:id="@+id/currentBid"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginBottom="100dp"
+        android:layout_marginRight="100dp"
+        android:text="" />
+    
 </RelativeLayout>

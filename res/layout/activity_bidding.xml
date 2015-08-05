@@ -5,7 +5,7 @@
     tools:context="${relativePackage}.${activityClass}" >
 
     <LinearLayout
-        android:id="@+id/currentBidVelue"
+        android:id="@+id/currentBidValue"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
@@ -26,10 +26,10 @@
     </LinearLayout>
 
     <LinearLayout
-        android:id="@+id/playerBidVelue"
+        android:id="@+id/playerBidValue"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/currentBidVelue" >
+        android:layout_below="@+id/currentBidValue" >
 
         <TextView
             android:layout_width="wrap_content"
