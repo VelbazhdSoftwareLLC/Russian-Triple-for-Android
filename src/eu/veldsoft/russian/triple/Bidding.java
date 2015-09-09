@@ -63,7 +63,12 @@ class Bidding {
 		if (bidder.canDoBid(score) == true) {
 			Bid bid = bidder.doBid(score);
 
-			if (bid.valid() == true) {
+			if (bid.getScore() == 0) {
+				/*
+				 * Pass.
+				 */
+				bidder.endBidding();
+			} else if (bid.valid() == true) {
 				bidHistory.add(bid);
 				return true;
 			} else {
@@ -104,6 +109,22 @@ class Bidding {
 		}
 
 		return null;
+	}
+
+	public boolean finished() {
+		int counter = 0;
+
+		for (Player player : players) {
+			if (player.isBidding() == true) {
+				counter++;
+			}
+		}
+
+		if (counter > 1) {
+			return false;
+		}
+
+		return true;
 	}
 
 	public boolean nextBidder() {

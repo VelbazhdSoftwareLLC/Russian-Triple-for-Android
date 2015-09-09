@@ -124,6 +124,8 @@ public class BiddingActivity extends Activity {
 								position).toString()).intValue();
 						if (value <= current || value > maximum) {
 							setCurrentBid(current);
+						} else {
+							setCurrentBid(value);
 						}
 					}
 

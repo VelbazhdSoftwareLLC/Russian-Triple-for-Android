@@ -18,6 +18,37 @@ import android.widget.Toast;
 public class GameActivity extends Activity {
 	private static int BID_REQUEST_ID = 1;
 
+	private void checkEndBidding(int delay) {
+		if (board.getBidding().finished() == false) {
+			if (board.getBidding().hasLast() == true) {
+				Toast.makeText(
+						GameActivity.this,
+						"Bid of "
+								+ board.getBidding().winner().getScore()
+								+ " done by "
+								+ board.getBidding().winner().getPlayer()
+										.getName() + ".", Toast.LENGTH_SHORT)
+						.show();
+			}
+
+			handler.postDelayed(biddingThread, delay);
+		} else {
+			if (board.getBidding().hasWinner() == true) {
+				Toast.makeText(
+						GameActivity.this,
+						"End bidding by "
+								+ board.getBidding().winner().getPlayer()
+										.getName() + " with bid of "
+								+ board.getBidding().winner().getScore() + ".",
+						Toast.LENGTH_LONG).show();
+
+				board.setState(State.CONTRACTING);
+			} else {
+				board.setState(State.DEALING);
+			}
+		}
+	}
+
 	// TODO Reorganize in bidding class.
 	private Runnable biddingThread = new Runnable() {
 		@Override
@@ -44,14 +75,7 @@ public class GameActivity extends Activity {
 				board.getBidding().nextBidder();
 				redraw();
 
-				// TODO Handle bid in the bidding process. Share this info with
-				// the thread.
-				Toast.makeText(
-						GameActivity.this,
-						"*** "
-								+ board.getBidding().getCurrentBidder()
-										.getName(), Toast.LENGTH_SHORT).show();
-				handler.postDelayed(this, 2500);
+				checkEndBidding(2700);
 			} else {
 				throw (new RuntimeException("Invalid bidder."));
 			}
@@ -247,7 +271,7 @@ public class GameActivity extends Activity {
 			board.getBidding().nextBidder();
 			redraw();
 
-			handler.postDelayed(biddingThread, 500);
+			checkEndBidding(100);
 		}
 	}
 

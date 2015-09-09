@@ -11,7 +11,7 @@ class ComputerPlayer extends Player implements AiBidder {
 		Bid bid = null;
 
 		// TODO Implement better AI.
-		if (Util.PRNG.nextDouble() < 0.95) {
+		if (Util.PRNG.nextDouble() < 0.55) {
 			if (currentValue < 100) {
 				bid = new Bid(100, this);
 			} else {
@@ -21,7 +21,6 @@ class ComputerPlayer extends Player implements AiBidder {
 			/*
 			 * Pass.
 			 */
-			
 			bid = new Bid(0, this);
 		}
 
