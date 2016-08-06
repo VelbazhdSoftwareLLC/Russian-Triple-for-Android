@@ -1,34 +1,74 @@
-package eu.veldsoft.russian.triple;
+package eu.veldsoft.russian.triple.model;
 
 import java.util.Vector;
 
-import eu.veldsoft.russian.triple.Card.Rank;
+import eu.veldsoft.russian.triple.model.Card.Rank;
 
-class Bid {
+/**
+ * Bid description class.
+ * 
+ * @author Todor Balabanov
+ */
+public class Bid {
+	/**
+	 * Score to be achieved if the bidding process is won.
+	 */
 	private int score;
 
+	/**
+	 * Player who did the bid.
+	 */
 	private Player player;
 
+	/**
+	 * Copy constructor.
+	 * 
+	 * @param bid
+	 *            Origial object.
+	 */
 	public Bid(Bid bid) {
 		super();
 		this.score = bid.score;
 		this.player = bid.player;
 	}
 
+	/**
+	 * Constructor with parameters.
+	 * 
+	 * @param score
+	 *            Score to achieve.
+	 * @param player
+	 *            Player who is doing the bid.
+	 */
 	public Bid(int score, Player player) {
 		super();
 		this.score = score;
 		this.player = player;
 	}
 
+	/**
+	 * Score getter.
+	 * 
+	 * @return Score value.
+	 */
 	public int getScore() {
 		return score;
 	}
 
+	/**
+	 * Player getter.
+	 * 
+	 * @return Player who did the bid.
+	 */
 	public Player getPlayer() {
 		return player;
 	}
 
+	/**
+	 * Maximum score available as bid value.
+	 * 
+	 * @return Maximum valid bid value.
+	 */
 	public int maximum() {
 		int numberOfMarriages = 0;
 
@@ -69,6 +109,11 @@ class Bid {
 		return 0;
 	}
 
+	/**
+	 * Check for valid bid.
+	 * 
+	 * @return True if the bid is valid, false otherwise.
+	 */
 	public boolean valid() {
 		if (score > maximum()) {
 			return false;
@@ -77,6 +122,9 @@ class Bid {
 		return true;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -86,6 +134,9 @@ class Bid {
 		return result;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
@@ -105,6 +156,9 @@ class Bid {
 		return true;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public String toString() {
 		return "Bid [score=" + score + ", player=" + player + "]";

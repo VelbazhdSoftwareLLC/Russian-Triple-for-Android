@@ -1,18 +1,10 @@
-package eu.veldsoft.russian.triple;
+package eu.veldsoft.russian.triple.model;
 
 import java.util.Collections;
-import java.util.Map;
 import java.util.Vector;
 
-class Trick {
-	// TODO Player trick tracking can be useful.
+class Hand {
 	private Vector<Card> cards = new Vector<Card>();
-
-	public Trick(Map<Player, Card> trick) {
-		for (Player player : trick.keySet()) {
-			cards.add(trick.get(player));
-		}
-	}
 
 	Vector<Card> getCards() {
 		return cards;
@@ -24,6 +16,10 @@ class Trick {
 
 	void reset() {
 		cards.clear();
+	}
+
+	void recieve(Card card) {
+		cards.add(card);
 	}
 
 	void sort() {

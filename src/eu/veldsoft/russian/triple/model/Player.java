@@ -1,8 +1,8 @@
-package eu.veldsoft.russian.triple;
+package eu.veldsoft.russian.triple.model;
 
 import java.util.Vector;
 
-class Player {
+public class Player {
 	private String name = "";
 
 	private int score = 0;
@@ -18,7 +18,7 @@ class Player {
 		this.name = name;
 	}
 
-	String getName() {
+	public String getName() {
 		return name;
 	}
 
@@ -54,7 +54,7 @@ class Player {
 		return canBid;
 	}
 
-	void stopBidding() {
+	public void stopBidding() {
 		canBid = false;
 	}
 

@@ -11,24 +11,58 @@ import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+/**
+ * Bidding screen.
+ * 
+ * @author Todor Balabanov
+ */
 public class BiddingActivity extends Activity {
-
+	/**
+	 * Current bid key.
+	 */
 	static final String EXTRA_CURRENT_BID_KEY = "eu.veldsoft.russian.triple.currentBidKey";
 
+	/**
+	 * Maximum possible bid key.
+	 */
 	static final String EXTRA_MAX_BID_KEY = "eu.veldsoft.russian.triple.maxBidKey";
 
+	/**
+	 * Bid result key.
+	 */
 	static final String EXTRA_RESULT_BID_KEY = "eu.veldsoft.russian.triple.resultBidKey";
 
+	/**
+	 * Bid pass key.
+	 */
 	static final String EXTRA_PASS_BID_KEY = "eu.veldsoft.russian.triple.passBidKey";
 
+	/**
+	 * Bid for pass situation.
+	 */
 	static final int PASS_VALUE = 0;
 
+	/**
+	 * Last bid value.
+	 */
 	private int last = 0;
 
+	/**
+	 * Current bid value.
+	 */
 	private int current = 0;
 
+	/**
+	 * Maximum valid bid.
+	 */
 	private int maximum = 0;
 
+	/**
+	 * Current bid setter.
+	 * 
+	 * @param current
+	 *            Value of the current bid.
+	 */
 	private void setCurrentBid(int current) {
 		if (current <= 0) {
 			return;
@@ -55,6 +89,9 @@ public class BiddingActivity extends Activity {
 		}
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	protected void onStart() {
 		super.onStart();
@@ -65,6 +102,9 @@ public class BiddingActivity extends Activity {
 		setCurrentBid(current);
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);

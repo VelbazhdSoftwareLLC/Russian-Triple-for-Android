@@ -1,4 +1,4 @@
-package eu.veldsoft.russian.triple;
+package eu.veldsoft.russian.triple.model;
 
 import java.util.Comparator;
 

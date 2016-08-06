@@ -6,18 +6,29 @@ import java.util.TimerTask;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.content.pm.PackageManager.NameNotFoundException;
 import android.os.Bundle;
 import android.webkit.WebView;
 import android.widget.Toast;
 
-//TODO Put splash screen timeout.
+/**
+ * Splash screen.
+ * 
+ * @author Todor Balabanov
+ */
 public class SplashActivity extends Activity {
-
+	/**
+	 * Timeout for splash screen visualization.
+	 */
 	private long timeout = 0L;
 
+	/**
+	 * Name of the activity to be open after the timeout.
+	 */
 	private String redirect = "";
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -67,6 +78,9 @@ public class SplashActivity extends Activity {
 		}
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	protected void onResume() {
 		super.onResume();

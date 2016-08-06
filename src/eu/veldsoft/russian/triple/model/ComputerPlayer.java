@@ -1,6 +1,8 @@
-package eu.veldsoft.russian.triple;
+package eu.veldsoft.russian.triple.model;
 
-class ComputerPlayer extends Player implements AiBidder {
+import eu.veldsoft.russian.triple.model.ai.AiBidder;
+
+public class ComputerPlayer extends Player implements AiBidder {
 
 	public ComputerPlayer(String name) {
 		super(name);

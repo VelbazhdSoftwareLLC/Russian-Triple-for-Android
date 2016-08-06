@@ -1,8 +1,8 @@
-package eu.veldsoft.russian.triple;
+package eu.veldsoft.russian.triple.model;
 
-class Card {
+public class Card {
 
-	enum Rank {
+	public enum Rank {
 		NINE(0, "Nine"), JACK(2, "Jack"), QUEEN(3, "Queen"), KING(4, "King"), TEN(
 				10, "Ten"), ACE(11, "Ace");
 
@@ -38,7 +38,7 @@ class Card {
 		}
 	}
 
-	enum Suit {
+	public enum Suit {
 		DIAMONDS(1, "Diamonds"), CLUBS(2, "Clubs"), HEARTS(3, "Hearts"), SPADES(
 				4, "Spades");
 
@@ -55,7 +55,7 @@ class Card {
 			}
 		}
 
-		static boolean isTrumpSelected() {
+		public static boolean isTrumpSelected() {
 			for (Suit suit : Suit.values()) {
 				if (suit.isTrump() == true) {
 					return true;
@@ -83,7 +83,7 @@ class Card {
 			trump = true;
 		}
 
-		boolean isTrump() {
+		public boolean isTrump() {
 			return (trump);
 		}
 	}
@@ -164,11 +164,11 @@ class Card {
 		this.suit = suit;
 	}
 
-	boolean isFaceUp() {
+	public boolean isFaceUp() {
 		return faceUp;
 	}
 
-	boolean isFaceDown() {
+	public boolean isFaceDown() {
 		return !faceUp;
 	}
 
@@ -180,7 +180,7 @@ class Card {
 		faceUp = false;
 	}
 
-	boolean isHighlighted() {
+	public boolean isHighlighted() {
 		return highlighted;
 	}
 
@@ -208,7 +208,7 @@ class Card {
 		return visible;
 	}
 
-	boolean isInvisible() {
+	public boolean isInvisible() {
 		return !visible;
 	}
 

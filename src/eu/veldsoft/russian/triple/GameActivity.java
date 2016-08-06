@@ -14,10 +14,29 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+import eu.veldsoft.russian.triple.model.Bid;
+import eu.veldsoft.russian.triple.model.Board;
+import eu.veldsoft.russian.triple.model.Card;
+import eu.veldsoft.russian.triple.model.ComputerPlayer;
+import eu.veldsoft.russian.triple.model.Deck;
+import eu.veldsoft.russian.triple.model.HumanPlayer;
+import eu.veldsoft.russian.triple.model.State;
 
+/**
+ * Game screen.
+ * 
+ * @author Todor Balabanov
+ */
 public class GameActivity extends Activity {
+	/**
+	 * Bid request identifier.
+	 */
 	private static int BID_REQUEST_ID = 1;
 
+	/**
+	 * 
+	 * @param delay
+	 */
 	private void checkEndBidding(int delay) {
 		if (board.getBidding().finished() == false) {
 			if (board.getBidding().hasLast() == true) {
@@ -49,8 +68,11 @@ public class GameActivity extends Activity {
 		}
 	}
 
-	// TODO Reorganize in bidding class.
+	/**
+	 * Bidding thread object.
+	 */
 	private Runnable biddingThread = new Runnable() {
+		// TODO Reorganize in bidding class.
 		@Override
 		public void run() {
 			if (board.getState() != State.BIDDING) {
@@ -82,6 +104,9 @@ public class GameActivity extends Activity {
 		}
 	};
 
+	/**
+	 * Card click listener object.
+	 */
 	private View.OnClickListener cardClicked = new View.OnClickListener() {
 		@Override
 		public void onClick(View view) {
@@ -97,23 +122,48 @@ public class GameActivity extends Activity {
 		}
 	};
 
+	/**
+	 * 
+	 */
 	private Handler handler = new Handler();
 
+	/**
+	 * Array with all information for the players, which should be displayed in
+	 * the game screen.
+	 */
 	private TextView playersInfo[] = { null, null, null };
 
+	/**
+	 * 
+	 */
 	private Integer backDrawable = null;
 
+	/**
+	 * Associative array with cards drawabels.
+	 */
 	private Map<Card, Integer> cardToDrawable = new HashMap<Card, Integer>();
 
+	/**
+	 * Reference to trump image view.
+	 */
 	private ImageView trumpImage = null;
 
+	/**
+	 * All cards image view as references.
+	 */
 	private ImageView cardsImages[] = { null, null, null, null, null, null,
 			null, null, null, null, null, null, null, null, null, null, null,
 			null, null, null, null, null, null, null, null, null, null, null,
 			null, null, };
 
+	/**
+	 * Board object, from the model, reference.
+	 */
 	private Board board = new Board();
 
+	/**
+	 * Update user interface according object model state.
+	 */
 	private void redraw() {
 		String players[] = board.getPlayersInfo();
 
@@ -170,6 +220,9 @@ public class GameActivity extends Activity {
 		}
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -253,6 +306,9 @@ public class GameActivity extends Activity {
 		redraw();
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		if (resultCode == RESULT_OK && requestCode == BID_REQUEST_ID) {
@@ -275,6 +331,9 @@ public class GameActivity extends Activity {
 		}
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		MenuInflater inflater = getMenuInflater();
@@ -282,6 +341,9 @@ public class GameActivity extends Activity {
 		return super.onCreateOptionsMenu(menu);
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
@@ -308,6 +370,9 @@ public class GameActivity extends Activity {
 		return true;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public void onDestroy() {
 		super.onDestroy();

@@ -1,9 +1,16 @@
-package eu.veldsoft.russian.triple;
+package eu.veldsoft.russian.triple.model;
 
 import java.util.Comparator;
 
+/**
+ * Comparator use for cards order when there is a trupm.
+ * 
+ * @author Todor Balabanov
+ */
 class TrumpComparator implements Comparator<Card> {
-
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public int compare(Card lhs, Card rhs) {
 		if (lhs.getSuit().isTrump() == true && rhs.getSuit().isTrump() == false) {
@@ -28,5 +35,4 @@ class TrumpComparator implements Comparator<Card> {
 
 		return 0;
 	}
-
 }

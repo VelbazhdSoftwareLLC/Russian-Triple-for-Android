@@ -1,6 +1,6 @@
-package eu.veldsoft.russian.triple;
+package eu.veldsoft.russian.triple.model;
 
-class Deck {
+public class Deck {
 	static private final Card[] cards = {
 			new Card(Card.Rank.NINE, Card.Suit.CLUBS, false, false, false),
 			new Card(Card.Rank.TEN, Card.Suit.CLUBS, false, false, false),
@@ -80,7 +80,7 @@ class Deck {
 		}
 	}
 
-	static Card cardAtPosition(int index) throws RuntimeException {
+	public static Card cardAtPosition(int index) throws RuntimeException {
 		if (index < 0 || index >= cards.length) {
 			throw (new IndexOutOfBoundsException("No such card!"));
 		}

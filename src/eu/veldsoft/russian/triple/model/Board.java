@@ -1,10 +1,10 @@
-package eu.veldsoft.russian.triple;
+package eu.veldsoft.russian.triple.model;
 
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Vector;
 
-class Board {
+public class Board {
 	public static final int HUMAN_PLAYER_INDEX = 1;
 
 	private State state = State.STARTING;
@@ -20,11 +20,11 @@ class Board {
 	private Player players[] = { new ComputerPlayer("Player 1"),
 			new HumanPlayer("Player 2"), new ComputerPlayer("Player 3") };
 
-	State getState() {
+	public State getState() {
 		return state;
 	}
 
-	void setState(State state) {
+	public void setState(State state) {
 		this.state = state;
 	}
 
@@ -68,7 +68,7 @@ class Board {
 		this.players = players;
 	}
 
-	String[] getPlayersInfo() {
+	public String[] getPlayersInfo() {
 		String info[] = new String[players.length];
 
 		for (int p = 0; p < players.length; p++) {
@@ -78,7 +78,7 @@ class Board {
 		return info;
 	}
 
-	Card[] getCardsOnTheBoard() {
+	public Card[] getCardsOnTheBoard() {
 		Card cards[] = { null, null, null, null, null, null, null, null, null,
 				null, null, null, null, null, null, null, null, null, null,
 				null, null, null, null, null, null, null, null, null, null,
@@ -107,13 +107,13 @@ class Board {
 		return cards;
 	}
 
-	void resetGame() {
+	public void resetGame() {
 		state = State.STARTING;
 		firstInRoundIndex = Util.PRNG.nextInt(players.length);
 		resetRound();
 	}
 
-	void resetRound() {
+	public void resetRound() {
 		Card.Suit.removeTrump();
 		bidding = new Bidding(players, firstInRoundIndex);
 		talon = new Talon();
@@ -129,7 +129,7 @@ class Board {
 		}
 	}
 
-	void deal() {
+	public void deal() {
 		state = State.DEALING;
 
 		Deck.reset();
@@ -162,7 +162,7 @@ class Board {
 		state = State.BIDDING;
 	}
 
-	void click(int selected) {
+	public void click(int selected) {
 		/*
 		 * Players hands.
 		 */

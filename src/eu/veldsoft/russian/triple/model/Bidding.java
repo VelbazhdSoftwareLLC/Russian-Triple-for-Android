@@ -1,34 +1,64 @@
-package eu.veldsoft.russian.triple;
+package eu.veldsoft.russian.triple.model;
 
 import java.util.Vector;
+
+import eu.veldsoft.russian.triple.model.ai.AiBidder;
 
 /**
  * Each round there is a different bidding. Create bidding object each time.
  * 
  * @author Todor Balabanov
  */
-class Bidding {
+public class Bidding {
 	/**
 	 * Keep track of the players from the board.
 	 */
 	private Player players[] = null;
 
+	/**
+	 * Index of the current bidder.
+	 */
 	private int currentBidderIndex = -1;
 
 	// TODO Create BidHistory class.
+	/**
+	 * Bid history record.
+	 */
 	private Vector<Bid> bidHistory = new Vector<Bid>();
 
+	/**
+	 * Constructor with parameters.
+	 * 
+	 * @param players
+	 *            Set of players.
+	 * @param firstBidderIndex
+	 *            Who is going to bid first.
+	 */
 	public Bidding(Player players[], int firstBidderIndex) {
 		this.players = players;
 		currentBidderIndex = firstBidderIndex;
 	}
 
-	Player getCurrentBidder() {
+	/**
+	 * Current bidding player getter.
+	 * 
+	 * @return Player who is bidding at the moment.
+	 */
+	public Player getCurrentBidder() {
 		return (players[currentBidderIndex]);
 	}
 
-	// TODO Handle human bidder too.
-	boolean doBid(int value) {
+	/**
+	 * Do bid by a human.
+	 * 
+	 * @param value
+	 *            Value of the bid.
+	 * 
+	 * @return True if the bid was done, false otherwise.
+	 */
+	public boolean doBid(int value) {
+		// TODO Handle human bidder too.
+
 		if (players[currentBidderIndex] instanceof HumanPlayer == false) {
 			return false;
 		}
@@ -48,7 +78,12 @@ class Bidding {
 		return false;
 	}
 
-	boolean doBid() {
+	/**
+	 * Do bid by an artificial intelligence.
+	 * 
+	 * @return True if the bid was done, false otherwise.
+	 */
+	public boolean doBid() {
 		if (players[currentBidderIndex] instanceof AiBidder == false) {
 			return false;
 		}
@@ -87,11 +122,21 @@ class Bidding {
 		return false;
 	}
 
-	boolean hasLast() {
+	/**
+	 * Has last bid ckeck.
+	 * 
+	 * @return True if there is a last bid, false otherwise.
+	 */
+	public boolean hasLast() {
 		return !bidHistory.isEmpty();
 	}
 
-	Bid last() {
+	/**
+	 * Obtain last bid.
+	 * 
+	 * @return Last bid done or null pointer of there is no last bid.
+	 */
+	public Bid last() {
 		if (bidHistory.isEmpty() == false) {
 			return bidHistory.lastElement();
 		}
@@ -99,11 +144,22 @@ class Bidding {
 		return null;
 	}
 
-	boolean hasWinner() {
+	/**
+	 * Has winner of the bidding process.
+	 * 
+	 * @return True if there is a winner in the bidding process, false
+	 *         otherwise.
+	 */
+	public boolean hasWinner() {
 		return !bidHistory.isEmpty();
 	}
 
-	Bid winner() {
+	/**
+	 * Obtain winner of the bidding process.
+	 * 
+	 * @return Winning bid or null pointer if there is no winner.
+	 */
+	public Bid winner() {
 		if (hasWinner() == true) {
 			return bidHistory.lastElement();
 		}
@@ -111,6 +167,11 @@ class Bidding {
 		return null;
 	}
 
+	/**
+	 * Obtain bidding end.
+	 * 
+	 * @return True if the bidding process finished, false otherwise.
+	 */
 	public boolean finished() {
 		int counter = 0;
 
@@ -127,6 +188,11 @@ class Bidding {
 		return true;
 	}
 
+	/**
+	 * Move to the next player who can bid.
+	 * 
+	 * @return True if next player will bid, false otherwise.
+	 */
 	public boolean nextBidder() {
 		boolean biddingInProgress = false;
 		for (Player player : players) {
