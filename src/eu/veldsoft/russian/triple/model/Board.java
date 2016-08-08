@@ -4,42 +4,103 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Vector;
 
+/**
+ * Game board class. The most common object in the object model.
+ * 
+ * @author Todor Balabanov
+ */
 public class Board {
+	/**
+	 * Index of the human player in the array with the players.
+	 */
 	public static final int HUMAN_PLAYER_INDEX = 1;
 
+	/**
+	 * Game state.
+	 */
 	private State state = State.STARTING;
 
+	/**
+	 * Each round different player is first.
+	 */
 	private int firstInRoundIndex = HUMAN_PLAYER_INDEX;
 
+	/**
+	 * Bidding process object.
+	 */
 	private Bidding bidding = null;
 
+	/**
+	 * Talone object.
+	 */
 	private Talon talon = null;
 
+	/**
+	 * Tricks played.
+	 */
 	private Map<Player, Card> trick = new HashMap<Player, Card>();
 
+	/**
+	 * All players on the board.
+	 */
 	private Player players[] = { new ComputerPlayer("Player 1"),
 			new HumanPlayer("Player 2"), new ComputerPlayer("Player 3") };
 
+	/**
+	 * State getter.
+	 * 
+	 * @return Board state.
+	 */
 	public State getState() {
 		return state;
 	}
 
+	/**
+	 * State setter.
+	 * 
+	 * @param state
+	 *            Next board state.
+	 */
 	public void setState(State state) {
 		this.state = state;
 	}
 
+	/**
+	 * Bidding object getter.
+	 * 
+	 * @return Bidding object.
+	 */
 	public Bidding getBidding() {
+		// TODO Consider to do a deep copy of this object.
 		return bidding;
 	}
 
+	/**
+	 * Talon getter.
+	 * 
+	 * @return Talon object.
+	 */
 	Talon getTalon() {
+		// TODO Consider to do a deep copy of this object.
 		return talon;
 	}
 
+	/**
+	 * Talon setter.
+	 * 
+	 * @param talon
+	 *            New talon.
+	 */
 	void setTalon(Talon talon) {
+		// TODO Consider to do a deep copy of this object.
 		this.talon = talon;
 	}
 
+	/**
+	 * Trick getter.
+	 * 
+	 * @return Last trick.
+	 */
 	Vector<Card> getTrick() {
 		Vector<Card> trick = new Vector<Card>();
 
@@ -50,6 +111,12 @@ public class Board {
 		return trick;
 	}
 
+	/**
+	 * Trick setter.
+	 * 
+	 * @param trick
+	 *            New trick.
+	 */
 	void setTrick(Vector<Card> trick) {
 		// TODO Check for number of cards in the trick.
 
@@ -60,14 +127,30 @@ public class Board {
 		}
 	}
 
+	/**
+	 * Players getter.
+	 * 
+	 * @return All players on the board.
+	 */
 	Player[] getPlayers() {
 		return players;
 	}
 
+	/**
+	 * Players setter.
+	 * 
+	 * @param players
+	 *            All players who should be on the board.
+	 */
 	void setPlayers(Player[] players) {
 		this.players = players;
 	}
 
+	/**
+	 * Player internal information.
+	 * 
+	 * @return Service information for the players.
+	 */
 	public String[] getPlayersInfo() {
 		String info[] = new String[players.length];
 
@@ -78,6 +161,11 @@ public class Board {
 		return info;
 	}
 
+	/**
+	 * Get all cards which are on the board.
+	 * 
+	 * @return All visible cards on the board even if they should be face downd.
+	 */
 	public Card[] getCardsOnTheBoard() {
 		Card cards[] = { null, null, null, null, null, null, null, null, null,
 				null, null, null, null, null, null, null, null, null, null,
@@ -107,12 +195,18 @@ public class Board {
 		return cards;
 	}
 
+	/**
+	 * Reset full game.
+	 */
 	public void resetGame() {
 		state = State.STARTING;
 		firstInRoundIndex = Util.PRNG.nextInt(players.length);
 		resetRound();
 	}
 
+	/**
+	 * Reset the current round.
+	 */
 	public void resetRound() {
 		Card.Suit.removeTrump();
 		bidding = new Bidding(players, firstInRoundIndex);
@@ -129,6 +223,9 @@ public class Board {
 		}
 	}
 
+	/**
+	 * Deal cards in the beginning of each round.
+	 */
 	public void deal() {
 		state = State.DEALING;
 
@@ -162,6 +259,12 @@ public class Board {
 		state = State.BIDDING;
 	}
 
+	/**
+	 * Modify board according selected card.
+	 * 
+	 * @param selected
+	 *            Index of the card which was selected.
+	 */
 	public void click(int selected) {
 		/*
 		 * Players hands.

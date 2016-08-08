@@ -19,7 +19,8 @@ class Trick {
 	/**
 	 * Constructor with parameters.
 	 * 
-	 * @param trick The taken trick.
+	 * @param trick
+	 *            The taken trick.
 	 */
 	public Trick(Map<Player, Card> trick) {
 		for (Player player : trick.keySet()) {
@@ -39,7 +40,8 @@ class Trick {
 	/**
 	 * Cards trick setter
 	 * 
-	 * @param cards Set of cards.
+	 * @param cards
+	 *            Set of cards.
 	 */
 	void setCards(Vector<Card> cards) {
 		this.cards = cards;

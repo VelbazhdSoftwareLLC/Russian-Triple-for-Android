@@ -26,7 +26,8 @@ class Talon {
 	/**
 	 * Cards setter.
 	 * 
-	 * @param cards Set of cards.
+	 * @param cards
+	 *            Set of cards.
 	 */
 	void setCards(Vector<Card> cards) {
 		this.cards = cards;
@@ -35,7 +36,8 @@ class Talon {
 	/**
 	 * Put card in the talon.
 	 * 
-	 * @param card Card to keep.
+	 * @param card
+	 *            Card to keep.
 	 */
 	void recieve(Card card) {
 		cards.add(card);

@@ -141,6 +141,13 @@ public class BiddingActivity extends Activity {
 				.setOnClickListener(new OnClickListener() {
 					@Override
 					public void onClick(View v) {
+						/**
+						 * Bidding can not finish without rise of the bid.
+						 */
+						if (last == current) {
+							return;
+						}
+
 						setResult(Activity.RESULT_OK, (new Intent().putExtra(
 								EXTRA_RESULT_BID_KEY, current).putExtra(
 								EXTRA_PASS_BID_KEY, false)));

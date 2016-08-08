@@ -2,12 +2,25 @@ package eu.veldsoft.russian.triple.model;
 
 import eu.veldsoft.russian.triple.model.ai.AiBidder;
 
+/**
+ * Computer player class.
+ * 
+ * @author Todor Balabanov
+ */
 public class ComputerPlayer extends Player implements AiBidder {
-
+	/**
+	 * Constructor with parameters.
+	 * 
+	 * @param name
+	 *            Player's name.
+	 */
 	public ComputerPlayer(String name) {
 		super(name);
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public Bid doBid(int currentValue) {
 		Bid bid = null;
@@ -29,11 +42,17 @@ public class ComputerPlayer extends Player implements AiBidder {
 		return bid;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public void endBidding() {
 		stopBidding();
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public boolean canDoBid(int currentValue) {
 		return isBidding();

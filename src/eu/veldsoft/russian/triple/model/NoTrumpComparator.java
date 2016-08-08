@@ -2,8 +2,15 @@ package eu.veldsoft.russian.triple.model;
 
 import java.util.Comparator;
 
+/**
+ * No trump comparator class.
+ * 
+ * @author Todor Balabanov
+ */
 class NoTrumpComparator implements Comparator<Card> {
-
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public int compare(Card lhs, Card rhs) {
 		if (lhs.getSuit().getOrder() > rhs.getSuit().getOrder()) {
