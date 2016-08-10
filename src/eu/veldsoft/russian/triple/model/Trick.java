@@ -1,5 +1,6 @@
 package eu.veldsoft.russian.triple.model;
 
+import java.io.Serializable;
 import java.util.Collections;
 import java.util.Map;
 import java.util.Vector;
@@ -9,7 +10,8 @@ import java.util.Vector;
  * 
  * @author Todor Balabanov
  */
-class Trick {
+@SuppressWarnings("serial")
+class Trick implements Serializable {
 	// TODO Player trick tracking can be useful.
 	/**
 	 * Cards in the trick.

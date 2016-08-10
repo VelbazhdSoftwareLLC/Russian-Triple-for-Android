@@ -1,5 +1,6 @@
 package eu.veldsoft.russian.triple.model;
 
+import java.io.Serializable;
 import java.util.Arrays;
 import java.util.List;
 
@@ -8,7 +9,8 @@ import java.util.List;
  * 
  * @author Todor Balabanov
  */
-public class Card {
+@SuppressWarnings("serial")
+public class Card implements Serializable {
 	/**
 	 * Card rank.
 	 * 

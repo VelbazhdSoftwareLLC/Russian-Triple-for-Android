@@ -1,5 +1,6 @@
 package eu.veldsoft.russian.triple.model;
 
+import java.io.Serializable;
 import java.util.Vector;
 
 import eu.veldsoft.russian.triple.model.Card.Rank;
@@ -9,7 +10,13 @@ import eu.veldsoft.russian.triple.model.Card.Rank;
  * 
  * @author Todor Balabanov
  */
-public class Bid {
+@SuppressWarnings("serial")
+public class Bid implements Serializable {
+	/**
+	 * Minimum valid bid value according game rules.
+	 */
+	public final static int MIN_VALID_BID_VALUE = 100;
+
 	/**
 	 * Score to be achieved if the bidding process is won.
 	 */
@@ -24,7 +31,7 @@ public class Bid {
 	 * Copy constructor.
 	 * 
 	 * @param bid
-	 *            Origial object.
+	 *            Original object.
 	 */
 	public Bid(Bid bid) {
 		super();

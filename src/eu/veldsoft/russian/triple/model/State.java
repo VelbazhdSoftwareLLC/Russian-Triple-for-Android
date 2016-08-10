@@ -6,5 +6,5 @@ package eu.veldsoft.russian.triple.model;
  * @author Todor Balabanov
  */
 public enum State {
-	STARTING, DEALING, BIDDING, CONTRACTING, PLAYING, SCORING, ENDING
+	NOT_STARTED, STARTING, DEALING, BIDDING, CONTRACTING, PLAYING, SCORING, ENDING, CLOSED
 }

@@ -18,7 +18,7 @@ public class Board {
 	/**
 	 * Game state.
 	 */
-	private State state = State.STARTING;
+	private State state = State.NOT_STARTED;
 
 	/**
 	 * Each round different player is first.
@@ -33,7 +33,7 @@ public class Board {
 	/**
 	 * Talone object.
 	 */
-	private Talon talon = null;
+	private Talon talon = new Talon();
 
 	/**
 	 * Tricks played.
@@ -63,6 +63,19 @@ public class Board {
 	 */
 	public void setState(State state) {
 		this.state = state;
+
+		if (state == State.STARTING) {
+			resetGame();
+		}
+
+		if (state == State.DEALING) {
+			resetRound();
+			deal();
+		}
+
+		if (state == State.CONTRACTING) {
+			revealTalon();
+		}
 	}
 
 	/**
@@ -201,7 +214,6 @@ public class Board {
 	public void resetGame() {
 		state = State.STARTING;
 		firstInRoundIndex = Util.PRNG.nextInt(players.length);
-		resetRound();
 	}
 
 	/**
@@ -325,5 +337,12 @@ public class Board {
 
 			index++;
 		}
+	}
+
+	/**
+	 * Put all talon cards face up.
+	 */
+	public void revealTalon() {
+		talon.reveal();
 	}
 }

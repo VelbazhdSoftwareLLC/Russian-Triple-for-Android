@@ -56,4 +56,13 @@ class Talon {
 	void sort() {
 		Collections.sort(cards, Util.noTrumpComparator);
 	}
+
+	/**
+	 * Put all cards face up.
+	 */
+	public void reveal() {
+		for (Card card : cards) {
+			card.faceUp();
+		}
+	}
 }

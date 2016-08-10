@@ -1,5 +1,6 @@
 package eu.veldsoft.russian.triple.model;
 
+import java.io.Serializable;
 import java.util.Collections;
 import java.util.Vector;
 
@@ -8,7 +9,8 @@ import java.util.Vector;
  * 
  * @author Todor Balabanov
  */
-class Hand {
+@SuppressWarnings("serial")
+class Hand implements Serializable {
 	/**
 	 * Set of cards.
 	 */

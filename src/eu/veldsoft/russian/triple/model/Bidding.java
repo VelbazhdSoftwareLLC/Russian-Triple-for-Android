@@ -1,5 +1,6 @@
 package eu.veldsoft.russian.triple.model;
 
+import java.io.Serializable;
 import java.util.Vector;
 
 import eu.veldsoft.russian.triple.model.ai.AiBidder;
@@ -9,7 +10,11 @@ import eu.veldsoft.russian.triple.model.ai.AiBidder;
  * 
  * @author Todor Balabanov
  */
-public class Bidding {
+@SuppressWarnings("serial")
+public class Bidding implements Serializable {
+	// TODO Implement methods for reading and writing in the serialization
+	// process.
+
 	/**
 	 * Keep track of the players from the board.
 	 */

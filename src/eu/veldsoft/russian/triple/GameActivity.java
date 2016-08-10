@@ -14,7 +14,6 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
-import eu.veldsoft.russian.triple.model.Bid;
 import eu.veldsoft.russian.triple.model.Board;
 import eu.veldsoft.russian.triple.model.Card;
 import eu.veldsoft.russian.triple.model.ComputerPlayer;
@@ -62,8 +61,10 @@ public class GameActivity extends Activity {
 						Toast.LENGTH_LONG).show();
 
 				board.setState(State.CONTRACTING);
+				updateViews();
 			} else {
 				board.setState(State.DEALING);
+				updateViews();
 			}
 		}
 	}
@@ -75,27 +76,21 @@ public class GameActivity extends Activity {
 		// TODO Reorganize in bidding class.
 		@Override
 		public void run() {
-			if (board.getState() != State.BIDDING) {
+			if (board.getState() == State.CLOSED) {
+				return;
+			} else if (board.getState() != State.BIDDING) {
 				handler.postDelayed(this, 1000);
 			} else if (board.getState() == State.BIDDING
 					&& board.getBidding().getCurrentBidder() instanceof HumanPlayer) {
-				int value = board.getBidding().hasLast() == true ? board
-						.getBidding().last().getScore() : 0;
-
-				Bid bid = new Bid(value, board.getBidding().getCurrentBidder());
-
-				startActivityForResult(
-						(new Intent(GameActivity.this, BiddingActivity.class))
-								.putExtra(
-										BiddingActivity.EXTRA_CURRENT_BID_KEY,
-										value).putExtra(
-										BiddingActivity.EXTRA_MAX_BID_KEY,
-										bid.maximum()), BID_REQUEST_ID);
+				startActivityForResult((new Intent(GameActivity.this,
+						BiddingActivity.class)).putExtra(
+						BiddingActivity.EXTRA_BIDDING_KEY, board.getBidding()),
+						BID_REQUEST_ID);
 			} else if (board.getState() == State.BIDDING
 					&& board.getBidding().getCurrentBidder() instanceof ComputerPlayer) {
 				board.getBidding().doBid();
 				board.getBidding().nextBidder();
-				redraw();
+				updateViews();
 
 				checkEndBidding(2700);
 			} else {
@@ -118,7 +113,7 @@ public class GameActivity extends Activity {
 				}
 			}
 
-			redraw();
+			updateViews();
 		}
 	};
 
@@ -164,17 +159,12 @@ public class GameActivity extends Activity {
 	/**
 	 * Update user interface according object model state.
 	 */
-	private void redraw() {
-		String players[] = board.getPlayersInfo();
-
-		for (int i = 0; i < playersInfo.length && i < players.length; i++) {
-			if (board.getState() == State.STARTING) {
-				playersInfo[i].setText("");
-				continue;
-			}
-
-			playersInfo[i].setText(players[i]);
+	private void updateViews() {
+		if (board.getState() == State.NOT_STARTED) {
+			return;
 		}
+
+		String players[] = board.getPlayersInfo();
 
 		if (Card.Suit.isTrumpSelected() == false) {
 			trumpImage.setImageBitmap(null);
@@ -211,8 +201,34 @@ public class GameActivity extends Activity {
 			}
 		}
 
+		/*
+		 * Update user interface for game to start.
+		 */
+		if (board.getState() == State.STARTING) {
+			for (int i = 0; i < playersInfo.length && i < players.length; i++) {
+				playersInfo[i].setText("");
+			}
+		} else {
+			for (int i = 0; i < playersInfo.length && i < players.length; i++) {
+				playersInfo[i].setText(players[i]);
+			}
+		}
+
+		/*
+		 * Update user interface during the bidding process.
+		 */
 		if (board.getState() == State.BIDDING
 				&& board.getBidding().hasLast() == true) {
+			((TextView) findViewById(R.id.currentBid)).setText(""
+					+ board.getBidding().last().getScore());
+		} else {
+			((TextView) findViewById(R.id.currentBid)).setText("");
+		}
+
+		/*
+		 * Update user interface during talon collection.
+		 */
+		if (board.getState() == State.CONTRACTING) {
 			((TextView) findViewById(R.id.currentBid)).setText(""
 					+ board.getBidding().last().getScore());
 		} else {
@@ -302,8 +318,8 @@ public class GameActivity extends Activity {
 			view.setOnClickListener(cardClicked);
 		}
 
-		board.resetGame();
-		redraw();
+		board.setState(State.STARTING);
+		updateViews();
 	}
 
 	/**
@@ -325,7 +341,7 @@ public class GameActivity extends Activity {
 				board.getBidding().doBid(bidValue);
 			}
 			board.getBidding().nextBidder();
-			redraw();
+			updateViews();
 
 			checkEndBidding(100);
 		}
@@ -348,13 +364,12 @@ public class GameActivity extends Activity {
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
 		case R.id.new_game:
-			board.resetGame();
-			redraw();
+			board.setState(State.STARTING);
+			updateViews();
 			break;
 		case R.id.new_deal:
-			board.resetRound();
-			board.deal();
-			redraw();
+			board.setState(State.DEALING);
+			updateViews();
 			break;
 		case R.id.help:
 			startActivity(new Intent(GameActivity.this, HelpActivity.class));
@@ -376,6 +391,7 @@ public class GameActivity extends Activity {
 	@Override
 	public void onDestroy() {
 		super.onDestroy();
+		board.setState(State.CLOSED);
 
 		handler.removeCallbacks(biddingThread);
 	}

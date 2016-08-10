@@ -10,6 +10,8 @@ import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.TextView;
+import eu.veldsoft.russian.triple.model.Bid;
+import eu.veldsoft.russian.triple.model.Bidding;
 
 /**
  * Bidding screen.
@@ -20,12 +22,7 @@ public class BiddingActivity extends Activity {
 	/**
 	 * Current bid key.
 	 */
-	static final String EXTRA_CURRENT_BID_KEY = "eu.veldsoft.russian.triple.currentBidKey";
-
-	/**
-	 * Maximum possible bid key.
-	 */
-	static final String EXTRA_MAX_BID_KEY = "eu.veldsoft.russian.triple.maxBidKey";
+	static final String EXTRA_BIDDING_KEY = "eu.veldsoft.russian.triple.biddingKey";
 
 	/**
 	 * Bid result key.
@@ -43,14 +40,14 @@ public class BiddingActivity extends Activity {
 	static final int PASS_VALUE = 0;
 
 	/**
+	 * Reference to the bidding object.
+	 */
+	private Bidding bidding = null;
+
+	/**
 	 * Last bid value.
 	 */
 	private int last = 0;
-
-	/**
-	 * Current bid value.
-	 */
-	private int current = 0;
 
 	/**
 	 * Maximum valid bid.
@@ -58,13 +55,26 @@ public class BiddingActivity extends Activity {
 	private int maximum = 0;
 
 	/**
+	 * Current bid value.
+	 */
+	private int current = 0;
+
+	/**
 	 * Current bid setter.
 	 * 
 	 * @param current
 	 *            Value of the current bid.
 	 */
-	private void setCurrentBid(int current) {
-		if (current <= 0) {
+	private void updateViews(int current) {
+		if (bidding == null) {
+			return;
+		}
+
+		/*
+		 * Bid value can not be less than minimum valid bid value according game
+		 * rules.
+		 */
+		if (current < Bid.MIN_VALID_BID_VALUE) {
 			return;
 		}
 
@@ -77,6 +87,9 @@ public class BiddingActivity extends Activity {
 
 		this.current = current;
 
+		((TextView) findViewById(R.id.currentBidderName)).setText(""
+				+ bidding.getCurrentBidder().getName());
+		((TextView) findViewById(R.id.maxValidBid)).setText("" + maximum);
 		((TextView) findViewById(R.id.bidValue)).setText("" + last);
 
 		Spinner spinner = (Spinner) findViewById(R.id.bidding);
@@ -96,10 +109,13 @@ public class BiddingActivity extends Activity {
 	protected void onStart() {
 		super.onStart();
 
-		last = current = getIntent().getIntExtra(EXTRA_CURRENT_BID_KEY, 0);
-		maximum = getIntent().getIntExtra(EXTRA_MAX_BID_KEY, 200);
+		bidding = (Bidding) getIntent().getSerializableExtra(EXTRA_BIDDING_KEY);
 
-		setCurrentBid(current);
+		last = current = bidding.hasLast() == true ? bidding.last().getScore()
+				: 0;
+		maximum = (new Bid(last, bidding.getCurrentBidder())).maximum();
+
+		updateViews(current);
 	}
 
 	/**
@@ -125,7 +141,7 @@ public class BiddingActivity extends Activity {
 				.setOnClickListener(new OnClickListener() {
 					@Override
 					public void onClick(View v) {
-						setCurrentBid(current + 1);
+						updateViews(current + 1);
 					}
 				});
 
@@ -133,7 +149,7 @@ public class BiddingActivity extends Activity {
 				.setOnClickListener(new OnClickListener() {
 					@Override
 					public void onClick(View v) {
-						setCurrentBid(current + 10);
+						updateViews(current + 10);
 					}
 				});
 
@@ -170,9 +186,9 @@ public class BiddingActivity extends Activity {
 						int value = new Integer(parent.getItemAtPosition(
 								position).toString()).intValue();
 						if (value <= current || value > maximum) {
-							setCurrentBid(current);
+							updateViews(current);
 						} else {
-							setCurrentBid(value);
+							updateViews(value);
 						}
 					}
 

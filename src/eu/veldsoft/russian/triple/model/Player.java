@@ -1,5 +1,6 @@
 package eu.veldsoft.russian.triple.model;
 
+import java.io.Serializable;
 import java.util.Vector;
 
 /**
@@ -7,7 +8,8 @@ import java.util.Vector;
  * 
  * @author Todor Balabanov
  */
-abstract public class Player {
+@SuppressWarnings("serial")
+abstract public class Player implements Serializable {
 	/**
 	 * Player's name.
 	 */
