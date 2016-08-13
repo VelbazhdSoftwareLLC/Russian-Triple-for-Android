@@ -12,6 +12,16 @@ import java.util.Vector;
 @SuppressWarnings("serial")
 class Hand implements Serializable {
 	/**
+	 * Number of cards in the hand during announce stage.
+	 */
+	static int NUMBER_OF_CARDS_DURING_ANNOUNCE = 7;
+
+	/**
+	 * Number of cards in the hand start playing stage.
+	 */
+	static int NUMBER_OF_CARDS_FOR_START_PLAYING = 8;
+
+	/**
 	 * Set of cards.
 	 */
 	private Vector<Card> cards = new Vector<Card>();

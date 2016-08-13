@@ -11,6 +11,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -231,8 +232,20 @@ public class GameActivity extends Activity {
 		if (board.getState() == State.CONTRACTING) {
 			((TextView) findViewById(R.id.currentBid)).setText(""
 					+ board.getBidding().last().getScore());
+			((Button) findViewById(R.id.giveLeft)).setVisibility(View.VISIBLE);
+			((Button) findViewById(R.id.giveRight)).setVisibility(View.VISIBLE);
+			((Button) findViewById(R.id.startPlaying))
+					.setVisibility(View.VISIBLE);
+			((Button) findViewById(R.id.giveUp)).setVisibility(View.VISIBLE);
 		} else {
 			((TextView) findViewById(R.id.currentBid)).setText("");
+			((Button) findViewById(R.id.giveLeft))
+					.setVisibility(View.INVISIBLE);
+			((Button) findViewById(R.id.giveRight))
+					.setVisibility(View.INVISIBLE);
+			((Button) findViewById(R.id.startPlaying))
+					.setVisibility(View.INVISIBLE);
+			((Button) findViewById(R.id.giveUp)).setVisibility(View.INVISIBLE);
 		}
 	}
 
@@ -317,6 +330,44 @@ public class GameActivity extends Activity {
 		for (ImageView view : cardsImages) {
 			view.setOnClickListener(cardClicked);
 		}
+
+		findViewById(R.id.giveLeft).setOnClickListener(
+				new View.OnClickListener() {
+					@Override
+					public void onClick(View view) {
+						board.giveCardDuringContracting(1, 0);
+						updateViews();
+					}
+				});
+
+		findViewById(R.id.giveRight).setOnClickListener(
+				new View.OnClickListener() {
+					@Override
+					public void onClick(View view) {
+						board.giveCardDuringContracting(1, 2);
+						updateViews();
+					}
+				});
+
+		findViewById(R.id.startPlaying).setOnClickListener(
+				new View.OnClickListener() {
+					@Override
+					public void onClick(View view) {
+						board.takeTalon();
+						board.setState(State.PLAYING);
+						updateViews();
+					}
+				});
+
+		findViewById(R.id.giveUp).setOnClickListener(
+				new View.OnClickListener() {
+					@Override
+					public void onClick(View view) {
+						// TODO Calculate scores according give up conditions.
+						board.setState(State.DEALING);
+						updateViews();
+					}
+				});
 
 		board.setState(State.STARTING);
 		updateViews();

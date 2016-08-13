@@ -155,6 +155,23 @@ final public class Deck {
 	}
 
 	/**
+	 * Obtain all selected cards in the deck.
+	 * 
+	 * @return List of selected cards.
+	 */
+	public static List<Card> selected() {
+		List<Card> list = new ArrayList<Card>();
+
+		for (Card card : CARDS) {
+			if (card.isHighlighted() == true) {
+				list.add(card);
+			}
+		}
+
+		return list;
+	}
+
+	/**
 	 * Private constructor, because instance in not needed from this class.
 	 */
 	private Deck() {

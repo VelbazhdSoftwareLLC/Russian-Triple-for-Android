@@ -124,6 +124,10 @@
     <string name="plus_one_caption">+1</string>
     <string name="plus_ten_caption">+10</string>
     <string name="done_capion">Done</string>
+    <string name="give_card_left_caption">"\u003c"</string>
+    <string name="give_card_rigth_caption">"\u003e"</string>
+    <string name="start_playing_caption">Start</string>
+    <string name="give_up_caption">Give Up</string>
     <string name="current_bid_label">"Last Bid: "</string>
     <string name="player_bid_label">"Your Bid: "</string>
     <string name="current_bid_name_label">"Player: "</string>

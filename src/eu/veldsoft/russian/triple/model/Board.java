@@ -1,6 +1,7 @@
 package eu.veldsoft.russian.triple.model;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Vector;
 
@@ -292,6 +293,9 @@ public class Board {
 						if (card.isUnhighlighted() == true) {
 							Deck.setAllUnhighlighted();
 							card.highlight();
+							if (state == State.CONTRACTING) {
+								card.getSuit().setTrump();
+							}
 						} else if (card.isHighlighted() == true) {
 							card.unhighlight();
 						}
@@ -314,6 +318,9 @@ public class Board {
 				if (card.isUnhighlighted() == true) {
 					Deck.setAllUnhighlighted();
 					card.highlight();
+					if (state == State.CONTRACTING) {
+						card.getSuit().setTrump();
+					}
 				} else if (card.isHighlighted() == true) {
 					card.unhighlight();
 				}
@@ -344,5 +351,87 @@ public class Board {
 	 */
 	public void revealTalon() {
 		talon.reveal();
+	}
+
+	/**
+	 * Give card during contract stage from announce winner to one of the other
+	 * players.
+	 * 
+	 * @param from
+	 *            From player index.
+	 * @param to
+	 *            To player index.
+	 * 
+	 * @return True if card transfer was successful, false otherwise.
+	 */
+	public boolean giveCardDuringContracting(int from, int to) {
+		// TODO Check from player index for correctness.
+
+		List<Card> selected = Deck.selected();
+
+		/*
+		 * Only one card can be given to each of the opponents during contract
+		 * stage.
+		 */
+		if (selected.size() <= 0 || selected.size() > 1) {
+			return false;
+		}
+
+		/*
+		 * Number of cards after announce should match.
+		 */
+		if (players[to].getHand().getCards().size() != Hand.NUMBER_OF_CARDS_DURING_ANNOUNCE) {
+			return false;
+		}
+
+		/*
+		 * Give card to the opponent.
+		 */
+		Card card = selected.get(0);
+		players[to].getHand().recieve(card);
+		card.unhighlight();
+		if (players[to] instanceof ComputerPlayer) {
+			card.faceDown();
+		} else if (players[to] instanceof HumanPlayer) {
+			card.faceUp();
+		}
+
+		/*
+		 * Remove the card from its previous place.
+		 */
+		players[from].getHand().getCards().remove(card);
+		talon.getCards().remove(card);
+
+		return true;
+	}
+
+	/**
+	 * Take talon at the end of contracting stage.
+	 */
+	public void takeTalon() {
+		if (talon.getCards().size() == 0) {
+			return;
+		}
+
+		/*
+		 * Check how many players have enough cards to start playing.
+		 */
+		int counter = 0;
+		Player receiver = null;
+		for (Player player : players) {
+			if (player.getHand().getCards().size() != Hand.NUMBER_OF_CARDS_FOR_START_PLAYING) {
+				receiver = player;
+			} else {
+				counter++;
+			}
+		}
+
+		/*
+		 * Only one player get all cards from the talon.
+		 */
+		if (counter == 2) {
+			receiver.getHand().getCards().addAll(talon.getCards());
+			talon.getCards().removeAllElements();
+		}
 	}
 }
