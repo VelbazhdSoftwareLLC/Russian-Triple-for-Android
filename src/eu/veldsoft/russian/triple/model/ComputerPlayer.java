@@ -1,13 +1,13 @@
 package eu.veldsoft.russian.triple.model;
 
-import eu.veldsoft.russian.triple.model.ai.AiBidder;
+import eu.veldsoft.russian.triple.model.ai.ComputerBidder;
 
 /**
  * Computer player class.
  * 
  * @author Todor Balabanov
  */
-public class ComputerPlayer extends Player implements AiBidder {
+public class ComputerPlayer extends Player implements ComputerBidder {
 	/**
 	 * Constructor with parameters.
 	 * 

@@ -3,7 +3,7 @@ package eu.veldsoft.russian.triple.model;
 import java.io.Serializable;
 import java.util.Vector;
 
-import eu.veldsoft.russian.triple.model.ai.AiBidder;
+import eu.veldsoft.russian.triple.model.ai.ComputerBidder;
 
 /**
  * Each round there is a different bidding. Create bidding object each time.
@@ -89,11 +89,11 @@ public class Bidding implements Serializable {
 	 * @return True if the bid was done, false otherwise.
 	 */
 	public boolean doBid() {
-		if (players[currentBidderIndex] instanceof AiBidder == false) {
+		if (players[currentBidderIndex] instanceof ComputerBidder == false) {
 			return false;
 		}
 
-		AiBidder bidder = (AiBidder) players[currentBidderIndex];
+		ComputerBidder bidder = (ComputerBidder) players[currentBidderIndex];
 
 		int score = 0;
 		if (hasLast() == true) {

@@ -128,7 +128,7 @@ public class Card implements Serializable {
 		/**
 		 * Remove trump flag from all suits.
 		 */
-		static void removeTrump() {
+		public static void removeTrump() {
 			// TODO May be it is not working!
 			for (Suit suit : Suit.values()) {
 				suit.trump = false;
@@ -433,5 +433,18 @@ public class Card implements Serializable {
 		}
 
 		return true;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see java.lang.Object#toString()
+	 */
+	@Override
+	public String toString() {
+		return "Card [" + rank.getName() + ", " + suit.getName() + ", "
+				+ (faceUp == true ? "Face Up" : "Face Down") + ", "
+				+ (highlighted == true ? "Selected" : "Unselected") + ", "
+				+ (visible == true ? "Visible" : "Invidible") + "]";
 	}
 }

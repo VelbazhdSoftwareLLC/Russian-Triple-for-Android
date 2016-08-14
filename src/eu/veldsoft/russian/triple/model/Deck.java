@@ -1,6 +1,7 @@
 package eu.veldsoft.russian.triple.model;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -11,54 +12,39 @@ import java.util.List;
  */
 final public class Deck {
 	/**
-	 * Set of cards.
+	 * Original order of the cards in the deck.
 	 */
-	static private final List<Card> CARDS = new ArrayList<Card>();
+	static private final Card ORIGINAL[] = {
+			new Card(Card.Rank.NINE, Card.Suit.CLUBS, false, false, false),
+			new Card(Card.Rank.TEN, Card.Suit.CLUBS, false, false, false),
+			new Card(Card.Rank.JACK, Card.Suit.CLUBS, false, false, false),
+			new Card(Card.Rank.QUEEN, Card.Suit.CLUBS, false, false, false),
+			new Card(Card.Rank.KING, Card.Suit.CLUBS, false, false, false),
+			new Card(Card.Rank.ACE, Card.Suit.CLUBS, false, false, false),
+			new Card(Card.Rank.NINE, Card.Suit.HEARTS, false, false, false),
+			new Card(Card.Rank.TEN, Card.Suit.HEARTS, false, false, false),
+			new Card(Card.Rank.JACK, Card.Suit.HEARTS, false, false, false),
+			new Card(Card.Rank.QUEEN, Card.Suit.HEARTS, false, false, false),
+			new Card(Card.Rank.KING, Card.Suit.HEARTS, false, false, false),
+			new Card(Card.Rank.ACE, Card.Suit.HEARTS, false, false, false),
+			new Card(Card.Rank.NINE, Card.Suit.DIAMONDS, false, false, false),
+			new Card(Card.Rank.TEN, Card.Suit.DIAMONDS, false, false, false),
+			new Card(Card.Rank.JACK, Card.Suit.DIAMONDS, false, false, false),
+			new Card(Card.Rank.QUEEN, Card.Suit.DIAMONDS, false, false, false),
+			new Card(Card.Rank.KING, Card.Suit.DIAMONDS, false, false, false),
+			new Card(Card.Rank.ACE, Card.Suit.DIAMONDS, false, false, false),
+			new Card(Card.Rank.NINE, Card.Suit.SPADES, false, false, false),
+			new Card(Card.Rank.TEN, Card.Suit.SPADES, false, false, false),
+			new Card(Card.Rank.JACK, Card.Suit.SPADES, false, false, false),
+			new Card(Card.Rank.QUEEN, Card.Suit.SPADES, false, false, false),
+			new Card(Card.Rank.KING, Card.Suit.SPADES, false, false, false),
+			new Card(Card.Rank.ACE, Card.Suit.SPADES, false, false, false), };
 
 	/**
-	 * Initialize static fields.
+	 * Set of cards ass deep copy of the array.
 	 */
-	static {
-		CARDS.add(new Card(Card.Rank.NINE, Card.Suit.CLUBS, false, false, false));
-		CARDS.add(new Card(Card.Rank.TEN, Card.Suit.CLUBS, false, false, false));
-		CARDS.add(new Card(Card.Rank.JACK, Card.Suit.CLUBS, false, false, false));
-		CARDS.add(new Card(Card.Rank.QUEEN, Card.Suit.CLUBS, false, false,
-				false));
-		CARDS.add(new Card(Card.Rank.KING, Card.Suit.CLUBS, false, false, false));
-		CARDS.add(new Card(Card.Rank.ACE, Card.Suit.CLUBS, false, false, false));
-		CARDS.add(new Card(Card.Rank.NINE, Card.Suit.HEARTS, false, false,
-				false));
-		CARDS.add(new Card(Card.Rank.TEN, Card.Suit.HEARTS, false, false, false));
-		CARDS.add(new Card(Card.Rank.JACK, Card.Suit.HEARTS, false, false,
-				false));
-		CARDS.add(new Card(Card.Rank.QUEEN, Card.Suit.HEARTS, false, false,
-				false));
-		CARDS.add(new Card(Card.Rank.KING, Card.Suit.HEARTS, false, false,
-				false));
-		CARDS.add(new Card(Card.Rank.ACE, Card.Suit.HEARTS, false, false, false));
-		CARDS.add(new Card(Card.Rank.NINE, Card.Suit.DIAMONDS, false, false,
-				false));
-		CARDS.add(new Card(Card.Rank.TEN, Card.Suit.DIAMONDS, false, false,
-				false));
-		CARDS.add(new Card(Card.Rank.JACK, Card.Suit.DIAMONDS, false, false,
-				false));
-		CARDS.add(new Card(Card.Rank.QUEEN, Card.Suit.DIAMONDS, false, false,
-				false));
-		CARDS.add(new Card(Card.Rank.KING, Card.Suit.DIAMONDS, false, false,
-				false));
-		CARDS.add(new Card(Card.Rank.ACE, Card.Suit.DIAMONDS, false, false,
-				false));
-		CARDS.add(new Card(Card.Rank.NINE, Card.Suit.SPADES, false, false,
-				false));
-		CARDS.add(new Card(Card.Rank.TEN, Card.Suit.SPADES, false, false, false));
-		CARDS.add(new Card(Card.Rank.JACK, Card.Suit.SPADES, false, false,
-				false));
-		CARDS.add(new Card(Card.Rank.QUEEN, Card.Suit.SPADES, false, false,
-				false));
-		CARDS.add(new Card(Card.Rank.KING, Card.Suit.SPADES, false, false,
-				false));
-		CARDS.add(new Card(Card.Rank.ACE, Card.Suit.SPADES, false, false, false));
-	}
+	static private final List<Card> CARDS = Arrays.asList(Arrays.<Card>copyOf(
+			ORIGINAL, ORIGINAL.length));
 
 	/**
 	 * Deck size.
@@ -133,6 +119,25 @@ final public class Deck {
 		for (Card card : CARDS) {
 			card.invisible();
 		}
+	}
+
+	/**
+	 * Obtain card on the specific position in the initial deck order.
+	 * 
+	 * @param index
+	 *            Index of the card in the deck.
+	 * 
+	 * @return Card as object reference.
+	 * 
+	 * @throws RuntimeException
+	 *             Return with error if the index is invalid.
+	 */
+	public static Card original(int index) throws RuntimeException {
+		if (index < 0 || index >= ORIGINAL.length) {
+			throw (new IndexOutOfBoundsException("No such card!"));
+		}
+
+		return (ORIGINAL[index]);
 	}
 
 	/**

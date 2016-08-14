@@ -7,5 +7,5 @@ import eu.veldsoft.russian.triple.model.Bidder;
  * 
  * @author Todor Balabanov
  */
-public interface AiBidder extends Bidder {
+public interface ComputerBidder extends Bidder {
 }

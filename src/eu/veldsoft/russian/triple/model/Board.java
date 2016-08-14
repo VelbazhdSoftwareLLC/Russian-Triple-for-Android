@@ -178,32 +178,29 @@ public class Board {
 	/**
 	 * Get all cards which are on the board.
 	 * 
-	 * @return All visible cards on the board even if they should be face downd.
+	 * @return All visible cards on the board even if they should be face down.
 	 */
-	public Card[] getCardsOnTheBoard() {
-		Card cards[] = { null, null, null, null, null, null, null, null, null,
-				null, null, null, null, null, null, null, null, null, null,
-				null, null, null, null, null, null, null, null, null, null,
-				null, };
+	public Card[][] getCardsOnTheBoard() {
+		Card cards[][] = { { null, null, null, null, null, null, null, null },
+				{ null, null, null, null, null, null, null, null },
+				{ null, null, null, null, null, null, null, null },
+				{ null, null, null }, { null, null, null } };
 
-		int index = 0;
-		for (int p = 0; p < players.length; p++, index = p * 8) {
+		int c = 0;
+		for (int p = 0; p < players.length; p++, c = 0) {
 			for (Card card : players[p].getHand().getCards()) {
-				cards[index] = card;
-				index++;
+				cards[p][c++] = card;
 			}
 		}
 
-		index = 24;
+		c = 0;
 		for (Card card : talon.getCards()) {
-			cards[index] = card;
-			index++;
+			cards[3][c++] = card;
 		}
 
-		index = 27;
+		c = 0;
 		for (Player player : players) {
-			cards[index] = trick.get(player);
-			index++;
+			cards[4][c++] = trick.get(player);
 		}
 
 		return cards;
@@ -215,6 +212,7 @@ public class Board {
 	public void resetGame() {
 		state = State.STARTING;
 		firstInRoundIndex = Util.PRNG.nextInt(players.length);
+		resetRound();
 	}
 
 	/**
@@ -407,10 +405,12 @@ public class Board {
 
 	/**
 	 * Take talon at the end of contracting stage.
+	 * 
+	 * @return True if talon is taken, false otherwise.
 	 */
-	public void takeTalon() {
+	public boolean takeTalon() {
 		if (talon.getCards().size() == 0) {
-			return;
+			return true;
 		}
 
 		/*
@@ -432,6 +432,24 @@ public class Board {
 		if (counter == 2) {
 			receiver.getHand().getCards().addAll(talon.getCards());
 			talon.getCards().removeAllElements();
+			return true;
 		}
+
+		return false;
+	}
+
+	/**
+	 * Check for playing stage by counting cards in players hands.
+	 * 
+	 * @return True if playing stage can start, false otherwise.
+	 */
+	public boolean readyToPlay() {
+		for (Player player : players) {
+			if (player.readyToPlay() == false) {
+				return false;
+			}
+		}
+
+		return true;
 	}
 }

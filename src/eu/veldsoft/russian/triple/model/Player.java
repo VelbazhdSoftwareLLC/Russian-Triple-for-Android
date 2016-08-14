@@ -198,4 +198,17 @@ abstract public class Player implements Serializable {
 	void prepare() {
 		hand.sort();
 	}
+
+	/**
+	 * Check for playing stage by counting cards in the hand.
+	 * 
+	 * @return True if playing stage can start, false otherwise.
+	 */
+	public boolean readyToPlay() {
+		if (hand.getCards().size() != Hand.NUMBER_OF_CARDS_FOR_START_PLAYING) {
+			return false;
+		}
+
+		return true;
+	}
 }

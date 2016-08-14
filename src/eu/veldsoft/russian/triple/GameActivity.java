@@ -179,26 +179,33 @@ public class GameActivity extends Activity {
 			trumpImage.setImageResource(R.drawable.diamonds);
 		}
 
-		Card cards[] = board.getCardsOnTheBoard();
-
+		/*
+		 * Remove alpha from all image views.
+		 */
 		for (ImageView image : cardsImages) {
 			image.setAlpha(1.0F);
 		}
 
-		for (int i = 0; i < cards.length && i < cardsImages.length; i++) {
-			if (cards[i] == null || cards[i].isInvisible() == true) {
-				cardsImages[i].setImageBitmap(null);
-				continue;
-			}
+		int k = 0;
+		Card cards[][] = board.getCardsOnTheBoard();
+		for (int p = 0; p < cards.length; p++) {
+			for (int q = 0; q < cards[p].length; q++) {
+				if (cards[p][q] == null || cards[p][q].isInvisible() == true) {
+					cardsImages[k++].setImageBitmap(null);
+					continue;
+				}
 
-			if (cards[i].isFaceDown() == true) {
-				cardsImages[i].setImageResource(backDrawable);
-			} else if (cards[i].isFaceUp() == true) {
-				cardsImages[i].setImageResource(cardToDrawable.get(cards[i]));
-			}
+				if (cards[p][q].isFaceDown() == true) {
+					cardsImages[k].setImageResource(backDrawable);
+				} else if (cards[p][q].isFaceUp() == true) {
+					cardsImages[k].setImageResource(cardToDrawable
+							.get(cards[p][q]));
+				}
 
-			if (cards[i].isHighlighted() == true) {
-				cardsImages[i].setAlpha(0.5F);
+				if (cards[p][q].isHighlighted() == true) {
+					cardsImages[k].setAlpha(0.5F);
+				}
+				k++;
 			}
 		}
 
@@ -265,30 +272,30 @@ public class GameActivity extends Activity {
 
 		backDrawable = R.drawable.back01;
 
-		cardToDrawable.put(Deck.cardAtPosition(0), R.drawable.card009c);
-		cardToDrawable.put(Deck.cardAtPosition(1), R.drawable.card010c);
-		cardToDrawable.put(Deck.cardAtPosition(2), R.drawable.card011c);
-		cardToDrawable.put(Deck.cardAtPosition(3), R.drawable.card012c);
-		cardToDrawable.put(Deck.cardAtPosition(4), R.drawable.card013c);
-		cardToDrawable.put(Deck.cardAtPosition(5), R.drawable.card001c);
-		cardToDrawable.put(Deck.cardAtPosition(6), R.drawable.card009h);
-		cardToDrawable.put(Deck.cardAtPosition(7), R.drawable.card010h);
-		cardToDrawable.put(Deck.cardAtPosition(8), R.drawable.card011h);
-		cardToDrawable.put(Deck.cardAtPosition(9), R.drawable.card012h);
-		cardToDrawable.put(Deck.cardAtPosition(10), R.drawable.card013h);
-		cardToDrawable.put(Deck.cardAtPosition(11), R.drawable.card001h);
-		cardToDrawable.put(Deck.cardAtPosition(12), R.drawable.card009d);
-		cardToDrawable.put(Deck.cardAtPosition(13), R.drawable.card010d);
-		cardToDrawable.put(Deck.cardAtPosition(14), R.drawable.card011d);
-		cardToDrawable.put(Deck.cardAtPosition(15), R.drawable.card012d);
-		cardToDrawable.put(Deck.cardAtPosition(16), R.drawable.card013d);
-		cardToDrawable.put(Deck.cardAtPosition(17), R.drawable.card001d);
-		cardToDrawable.put(Deck.cardAtPosition(18), R.drawable.card009s);
-		cardToDrawable.put(Deck.cardAtPosition(19), R.drawable.card010s);
-		cardToDrawable.put(Deck.cardAtPosition(20), R.drawable.card011s);
-		cardToDrawable.put(Deck.cardAtPosition(21), R.drawable.card012s);
-		cardToDrawable.put(Deck.cardAtPosition(22), R.drawable.card013s);
-		cardToDrawable.put(Deck.cardAtPosition(23), R.drawable.card001s);
+		cardToDrawable.put(Deck.original(0), R.drawable.card009c);
+		cardToDrawable.put(Deck.original(1), R.drawable.card010c);
+		cardToDrawable.put(Deck.original(2), R.drawable.card011c);
+		cardToDrawable.put(Deck.original(3), R.drawable.card012c);
+		cardToDrawable.put(Deck.original(4), R.drawable.card013c);
+		cardToDrawable.put(Deck.original(5), R.drawable.card001c);
+		cardToDrawable.put(Deck.original(6), R.drawable.card009h);
+		cardToDrawable.put(Deck.original(7), R.drawable.card010h);
+		cardToDrawable.put(Deck.original(8), R.drawable.card011h);
+		cardToDrawable.put(Deck.original(9), R.drawable.card012h);
+		cardToDrawable.put(Deck.original(10), R.drawable.card013h);
+		cardToDrawable.put(Deck.original(11), R.drawable.card001h);
+		cardToDrawable.put(Deck.original(12), R.drawable.card009d);
+		cardToDrawable.put(Deck.original(13), R.drawable.card010d);
+		cardToDrawable.put(Deck.original(14), R.drawable.card011d);
+		cardToDrawable.put(Deck.original(15), R.drawable.card012d);
+		cardToDrawable.put(Deck.original(16), R.drawable.card013d);
+		cardToDrawable.put(Deck.original(17), R.drawable.card001d);
+		cardToDrawable.put(Deck.original(18), R.drawable.card009s);
+		cardToDrawable.put(Deck.original(19), R.drawable.card010s);
+		cardToDrawable.put(Deck.original(20), R.drawable.card011s);
+		cardToDrawable.put(Deck.original(21), R.drawable.card012s);
+		cardToDrawable.put(Deck.original(22), R.drawable.card013s);
+		cardToDrawable.put(Deck.original(23), R.drawable.card001s);
 
 		trumpImage = (ImageView) findViewById(R.id.trumpImageView);
 
@@ -335,6 +342,7 @@ public class GameActivity extends Activity {
 				new View.OnClickListener() {
 					@Override
 					public void onClick(View view) {
+						Card.Suit.removeTrump();
 						board.giveCardDuringContracting(1, 0);
 						updateViews();
 					}
@@ -344,6 +352,7 @@ public class GameActivity extends Activity {
 				new View.OnClickListener() {
 					@Override
 					public void onClick(View view) {
+						Card.Suit.removeTrump();
 						board.giveCardDuringContracting(1, 2);
 						updateViews();
 					}
@@ -353,8 +362,11 @@ public class GameActivity extends Activity {
 				new View.OnClickListener() {
 					@Override
 					public void onClick(View view) {
-						board.takeTalon();
-						board.setState(State.PLAYING);
+						if (board.takeTalon() == true
+								&& Card.Suit.isTrumpSelected() == true
+								&& board.readyToPlay() == true) {
+							board.setState(State.PLAYING);
+						}
 						updateViews();
 					}
 				});
