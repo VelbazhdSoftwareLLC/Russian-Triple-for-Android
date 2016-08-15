@@ -43,23 +43,26 @@ public class GameActivity extends Activity {
 				Toast.makeText(
 						GameActivity.this,
 						"Bid of "
-								+ board.getBidding().winner().getScore()
+								+ board.getBidding().announceWinner()
+										.getScore()
 								+ " done by "
-								+ board.getBidding().winner().getPlayer()
-										.getName() + ".", Toast.LENGTH_SHORT)
-						.show();
+								+ board.getBidding().announceWinner()
+										.getPlayer().getName() + ".",
+						Toast.LENGTH_SHORT).show();
 			}
 
-			handler.postDelayed(biddingThread, delay);
+			handler.postDelayed(aiThread, delay);
 		} else {
 			if (board.getBidding().hasWinner() == true) {
 				Toast.makeText(
 						GameActivity.this,
 						"End bidding by "
-								+ board.getBidding().winner().getPlayer()
-										.getName() + " with bid of "
-								+ board.getBidding().winner().getScore() + ".",
-						Toast.LENGTH_LONG).show();
+								+ board.getBidding().announceWinner()
+										.getPlayer().getName()
+								+ " with bid of "
+								+ board.getBidding().announceWinner()
+										.getScore() + ".", Toast.LENGTH_LONG)
+						.show();
 
 				board.setState(State.CONTRACTING);
 				updateViews();
@@ -73,7 +76,7 @@ public class GameActivity extends Activity {
 	/**
 	 * Bidding thread object.
 	 */
-	private Runnable biddingThread = new Runnable() {
+	private Runnable aiThread = new Runnable() {
 		// TODO Reorganize in bidding class.
 		@Override
 		public void run() {
@@ -97,6 +100,12 @@ public class GameActivity extends Activity {
 			} else {
 				throw (new RuntimeException("Invalid bidder."));
 			}
+			
+			//TODO Contracting for computer player.
+			//board.takeTalon();
+			//board.getBidding().announceWinner().getPlayer().giveCards();
+			//board.getBidding().announceWinner().getPlayer().trumpSelection().setTrump();
+			//board.setState(State.PLAYING);
 		}
 	};
 
@@ -239,11 +248,18 @@ public class GameActivity extends Activity {
 		if (board.getState() == State.CONTRACTING) {
 			((TextView) findViewById(R.id.currentBid)).setText(""
 					+ board.getBidding().last().getScore());
-			((Button) findViewById(R.id.giveLeft)).setVisibility(View.VISIBLE);
-			((Button) findViewById(R.id.giveRight)).setVisibility(View.VISIBLE);
-			((Button) findViewById(R.id.startPlaying))
-					.setVisibility(View.VISIBLE);
-			((Button) findViewById(R.id.giveUp)).setVisibility(View.VISIBLE);
+
+			if (board.getBidding().hasWinner()
+					&& board.getBidding().announceWinner().getPlayer() instanceof HumanPlayer) {
+				((Button) findViewById(R.id.giveLeft))
+						.setVisibility(View.VISIBLE);
+				((Button) findViewById(R.id.giveRight))
+						.setVisibility(View.VISIBLE);
+				((Button) findViewById(R.id.startPlaying))
+						.setVisibility(View.VISIBLE);
+				((Button) findViewById(R.id.giveUp))
+						.setVisibility(View.VISIBLE);
+			}
 		} else {
 			((TextView) findViewById(R.id.currentBid)).setText("");
 			((Button) findViewById(R.id.giveLeft))
@@ -264,7 +280,7 @@ public class GameActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_game);
 
-		handler.postDelayed(biddingThread, 0);
+		handler.postDelayed(aiThread, 0);
 
 		playersInfo[0] = (TextView) findViewById(R.id.playerInfo01);
 		playersInfo[1] = (TextView) findViewById(R.id.playerInfo02);
@@ -456,6 +472,6 @@ public class GameActivity extends Activity {
 		super.onDestroy();
 		board.setState(State.CLOSED);
 
-		handler.removeCallbacks(biddingThread);
+		handler.removeCallbacks(aiThread);
 	}
 }

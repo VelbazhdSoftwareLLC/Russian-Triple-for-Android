@@ -3,7 +3,7 @@ package eu.veldsoft.russian.triple.model;
 import java.io.Serializable;
 import java.util.Vector;
 
-import eu.veldsoft.russian.triple.model.ai.ComputerBidder;
+import eu.veldsoft.russian.triple.model.computer.ComputerBidder;
 
 /**
  * Each round there is a different bidding. Create bidding object each time.
@@ -164,7 +164,7 @@ public class Bidding implements Serializable {
 	 * 
 	 * @return Winning bid or null pointer if there is no winner.
 	 */
-	public Bid winner() {
+	public Bid announceWinner() {
 		if (hasWinner() == true) {
 			return bidHistory.lastElement();
 		}

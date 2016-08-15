@@ -1,4 +1,4 @@
-package eu.veldsoft.russian.triple.model.ai;
+package eu.veldsoft.russian.triple.model.computer;
 
 import eu.veldsoft.russian.triple.model.Bidder;
 

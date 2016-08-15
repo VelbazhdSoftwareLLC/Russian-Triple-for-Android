@@ -1,9 +1,9 @@
 package eu.veldsoft.russian.triple.model;
 
-import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
+import java.util.List;
 import java.util.Vector;
+import java.util.HashMap;
 
 /**
  * Game board class. The most common object in the object model.
@@ -30,6 +30,11 @@ public class Board {
 	 * Bidding process object.
 	 */
 	private Bidding bidding = null;
+
+	/**
+	 * Keep reference to the player who won announce.
+	 */
+	private Player announceWinner = null;
 
 	/**
 	 * Talone object.
@@ -173,6 +178,15 @@ public class Board {
 		}
 
 		return info;
+	}
+
+	/**
+	 * Announce winner getter.
+	 * 
+	 * @return Reference to the player won the announce stage.
+	 */
+	public Player getAnnounceWinner() {
+		return announceWinner;
 	}
 
 	/**

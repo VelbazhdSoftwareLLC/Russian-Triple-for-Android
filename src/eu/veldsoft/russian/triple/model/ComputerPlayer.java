@@ -1,13 +1,16 @@
 package eu.veldsoft.russian.triple.model;
 
-import eu.veldsoft.russian.triple.model.ai.ComputerBidder;
+import eu.veldsoft.russian.triple.model.Card.Suit;
+import eu.veldsoft.russian.triple.model.computer.ComputerBidder;
+import eu.veldsoft.russian.triple.model.computer.ComputerContractor;
 
 /**
  * Computer player class.
  * 
  * @author Todor Balabanov
  */
-public class ComputerPlayer extends Player implements ComputerBidder {
+public class ComputerPlayer extends Player implements ComputerBidder,
+		ComputerContractor {
 	/**
 	 * Constructor with parameters.
 	 * 
@@ -58,4 +61,33 @@ public class ComputerPlayer extends Player implements ComputerBidder {
 		return isBidding();
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public Suit trumpSelection() {
+		// TODO Implement something stronger than random search.
+		return getHand().getCards()
+				.get(Util.PRNG.nextInt(getHand().getCards().size())).getSuit();
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public Card[] giveCards() {
+		Card gift[] = { null, null };
+
+		/*
+		 * Random selection, but two different cards.
+		 */
+		do {
+			gift[0] = getHand().getCards().get(
+					Util.PRNG.nextInt(getHand().getCards().size()));
+			gift[1] = getHand().getCards().get(
+					Util.PRNG.nextInt(getHand().getCards().size()));
+		} while (gift[0] == gift[1]);
+
+		return gift;
+	}
 }

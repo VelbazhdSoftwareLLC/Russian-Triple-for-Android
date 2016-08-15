@@ -5,7 +5,7 @@ package eu.veldsoft.russian.triple.model;
  * 
  * @author Todor Balabanov
  */
-public class HumanPlayer extends Player {
+public class HumanPlayer extends Player /*implements HumanBidder, HumanContractor*/ {
 	/**
 	 * Constructor with parameters.
 	 * 
