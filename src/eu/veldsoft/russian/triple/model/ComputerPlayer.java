@@ -1,5 +1,9 @@
 package eu.veldsoft.russian.triple.model;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 import eu.veldsoft.russian.triple.model.Card.Suit;
 import eu.veldsoft.russian.triple.model.computer.ComputerBidder;
 import eu.veldsoft.russian.triple.model.computer.ComputerContractor;
@@ -11,6 +15,11 @@ import eu.veldsoft.russian.triple.model.computer.ComputerContractor;
  */
 public class ComputerPlayer extends Player implements ComputerBidder,
 		ComputerContractor {
+	/**
+	 * Reference to board talon object.
+	 */
+	private Talon talon = null;
+
 	/**
 	 * Constructor with parameters.
 	 * 
@@ -76,18 +85,35 @@ public class ComputerPlayer extends Player implements ComputerBidder,
 	 */
 	@Override
 	public Card[] giveCards() {
-		Card gift[] = { null, null };
+		// TODO Array can be replaced with list.
+		Card gifts[] = { null, null };
+
+		List<Card> cards = new ArrayList<Card>();
+		cards.addAll(getHand().getCards());
+		cards.addAll(talon.getCards());
 
 		/*
 		 * Random selection, but two different cards.
 		 */
 		do {
-			gift[0] = getHand().getCards().get(
-					Util.PRNG.nextInt(getHand().getCards().size()));
-			gift[1] = getHand().getCards().get(
-					Util.PRNG.nextInt(getHand().getCards().size()));
-		} while (gift[0] == gift[1]);
+			gifts[0] = cards.get(Util.PRNG.nextInt(cards.size()));
+			gifts[1] = cards.get(Util.PRNG.nextInt(cards.size()));
+		} while (gifts[0] == gifts[1]);
 
-		return gift;
+		/*
+		 * Remove cards from your own hand.
+		 */
+		talon.getCards().removeAll(Arrays.asList(gifts));
+		getHand().getCards().removeAll(Arrays.asList(gifts));
+
+		return gifts;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public void talonLink(Talon talon) {
+		this.talon = talon;
 	}
 }

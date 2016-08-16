@@ -305,7 +305,8 @@ public class Board {
 						if (card.isUnhighlighted() == true) {
 							Deck.setAllUnhighlighted();
 							card.highlight();
-							if (state == State.CONTRACTING) {
+							if (state == State.CONTRACTING
+									&& bidding.announceWinner().getPlayer() == players[HUMAN_PLAYER_INDEX]) {
 								card.getSuit().setTrump();
 							}
 						} else if (card.isHighlighted() == true) {
@@ -330,7 +331,8 @@ public class Board {
 				if (card.isUnhighlighted() == true) {
 					Deck.setAllUnhighlighted();
 					card.highlight();
-					if (state == State.CONTRACTING) {
+					if (state == State.CONTRACTING
+							&& bidding.announceWinner().getPlayer() == players[HUMAN_PLAYER_INDEX]) {
 						card.getSuit().setTrump();
 					}
 				} else if (card.isHighlighted() == true) {
@@ -363,6 +365,13 @@ public class Board {
 	 */
 	public void revealTalon() {
 		talon.reveal();
+
+		// TODO It should be somewhere else, not in this method.
+		for (Player player : players) {
+			if (player instanceof ComputerPlayer) {
+				((ComputerPlayer) player).talonLink(talon);
+			}
+		}
 	}
 
 	/**
@@ -446,10 +455,37 @@ public class Board {
 		if (counter == 2) {
 			receiver.getHand().getCards().addAll(talon.getCards());
 			talon.getCards().removeAllElements();
+
+			/*
+			 * Resort players hands.
+			 */
+			for (Player player : players) {
+				player.getHand().sort();
+			}
+
 			return true;
 		}
 
 		return false;
+	}
+
+	/**
+	 * Give two cards to the opponents, one card for each.
+	 * 
+	 * @param gifts
+	 *            Cards to be given.
+	 * @param opponents
+	 *            Players to receive cards.
+	 * 
+	 * @return True if cards were given correctly, false otherwise.
+	 */
+	public boolean giveCards(Player[] opponents, Card[] gifts) {
+		for (int i = 0; i < opponents.length && i < gifts.length; i++) {
+			opponents[i].getHand().recieve(gifts[i]);
+			opponents[i].getHand().sort();
+		}
+
+		return true;
 	}
 
 	/**
@@ -465,5 +501,25 @@ public class Board {
 		}
 
 		return true;
+	}
+
+	/**
+	 * Obtain player's opponents.
+	 * 
+	 * @param player
+	 * @return
+	 */
+	public Player[] opponents(Player me) {
+		Player opponents[] = new Player[players.length - 1];
+
+		int p = 0;
+		for (Player player : players) {
+			if (player == me) {
+				continue;
+			}
+			opponents[p++] = player;
+		}
+
+		return opponents;
 	}
 }

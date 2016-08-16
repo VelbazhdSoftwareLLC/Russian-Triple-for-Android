@@ -8,7 +8,7 @@ import java.util.Vector;
  * 
  * @author Todor Balabanov
  */
-class Talon {
+public class Talon {
 	/**
 	 * Set of cards.
 	 */

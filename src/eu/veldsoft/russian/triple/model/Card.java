@@ -184,7 +184,7 @@ public class Card implements Serializable {
 		/**
 		 * Set particular suit as trump suit.
 		 */
-		void setTrump() {
+		public void setTrump() {
 			removeTrump();
 			trump = true;
 		}

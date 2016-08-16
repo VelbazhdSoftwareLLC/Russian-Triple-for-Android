@@ -7,6 +7,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.SystemClock;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -20,6 +21,7 @@ import eu.veldsoft.russian.triple.model.Card;
 import eu.veldsoft.russian.triple.model.ComputerPlayer;
 import eu.veldsoft.russian.triple.model.Deck;
 import eu.veldsoft.russian.triple.model.HumanPlayer;
+import eu.veldsoft.russian.triple.model.Player;
 import eu.veldsoft.russian.triple.model.State;
 
 /**
@@ -70,6 +72,8 @@ public class GameActivity extends Activity {
 				board.setState(State.DEALING);
 				updateViews();
 			}
+
+			handler.postDelayed(aiThread, delay);
 		}
 	}
 
@@ -77,13 +81,23 @@ public class GameActivity extends Activity {
 	 * Bidding thread object.
 	 */
 	private Runnable aiThread = new Runnable() {
-		// TODO Reorganize in bidding class.
+		/**
+		 * Delay for thread sleeping if computer does not have action to take.
+		 */
+		private static final int COMPUTER_DO_NOTHING_DELAY = 1000;
+
+		/**
+		 * Delay for end bidding check.
+		 */
+		private static final int BIDDING_END_CHECK_DELAY = 2700;
+
+		/**
+		 * {@inheritDoc}
+		 */
 		@Override
 		public void run() {
 			if (board.getState() == State.CLOSED) {
 				return;
-			} else if (board.getState() != State.BIDDING) {
-				handler.postDelayed(this, 1000);
 			} else if (board.getState() == State.BIDDING
 					&& board.getBidding().getCurrentBidder() instanceof HumanPlayer) {
 				startActivityForResult((new Intent(GameActivity.this,
@@ -96,16 +110,29 @@ public class GameActivity extends Activity {
 				board.getBidding().nextBidder();
 				updateViews();
 
-				checkEndBidding(2700);
+				checkEndBidding(BIDDING_END_CHECK_DELAY);
+			} else if (board.getState() == State.CONTRACTING
+					&& board.getAnnounceWinner() instanceof ComputerPlayer) {
+				ComputerPlayer announceWinner = (ComputerPlayer) board
+						.getBidding().announceWinner().getPlayer();
+
+				Card gifts[] = announceWinner.giveCards();
+				Player opponents[] = board.opponents(announceWinner);
+				board.giveCards(opponents, gifts);
+				announceWinner.trumpSelection().setTrump();
+				updateViews();
+
+				SystemClock.sleep(100);
+				board.takeTalon();
+				updateViews();
+
+				SystemClock.sleep(100);
+				board.setState(State.PLAYING);
+
+				handler.postDelayed(aiThread, COMPUTER_DO_NOTHING_DELAY);
 			} else {
-				throw (new RuntimeException("Invalid bidder."));
+				handler.postDelayed(aiThread, COMPUTER_DO_NOTHING_DELAY);
 			}
-			
-			//TODO Contracting for computer player.
-			//board.takeTalon();
-			//board.getBidding().announceWinner().getPlayer().giveCards();
-			//board.getBidding().announceWinner().getPlayer().trumpSelection().setTrump();
-			//board.setState(State.PLAYING);
 		}
 	};
 
@@ -270,6 +297,15 @@ public class GameActivity extends Activity {
 					.setVisibility(View.INVISIBLE);
 			((Button) findViewById(R.id.giveUp)).setVisibility(View.INVISIBLE);
 		}
+
+		/*
+		 * Update user interface during the playing process.
+		 */
+		if (board.getState() == State.PLAYING) {
+			((TextView) findViewById(R.id.currentBid)).setText(""
+					+ board.getBidding().last().getScore());
+		} else {
+		}
 	}
 
 	/**
@@ -279,8 +315,6 @@ public class GameActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_game);
-
-		handler.postDelayed(aiThread, 0);
 
 		playersInfo[0] = (TextView) findViewById(R.id.playerInfo01);
 		playersInfo[1] = (TextView) findViewById(R.id.playerInfo02);
@@ -359,7 +393,9 @@ public class GameActivity extends Activity {
 					@Override
 					public void onClick(View view) {
 						Card.Suit.removeTrump();
-						board.giveCardDuringContracting(1, 0);
+						if (board.giveCardDuringContracting(1, 0) == true) {
+							// view.setVisibility(View.INVISIBLE);
+						}
 						updateViews();
 					}
 				});
@@ -369,7 +405,9 @@ public class GameActivity extends Activity {
 					@Override
 					public void onClick(View view) {
 						Card.Suit.removeTrump();
-						board.giveCardDuringContracting(1, 2);
+						if (board.giveCardDuringContracting(1, 2) == true) {
+							// view.setVisibility(View.INVISIBLE);
+						}
 						updateViews();
 					}
 				});
@@ -399,6 +437,8 @@ public class GameActivity extends Activity {
 
 		board.setState(State.STARTING);
 		updateViews();
+
+		handler.postDelayed(aiThread, 0);
 	}
 
 	/**
